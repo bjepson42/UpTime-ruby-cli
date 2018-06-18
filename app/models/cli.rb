@@ -10,6 +10,7 @@ class Cli
     user_name_response = gets.chomp
     user_name_array = user_name_response.split(" ")
     self.user = User.find_by(first_name: user_name_array[0], last_name: user_name_array[1])
+    puts "Hello, #{self.user.first_name} #{self.user.last_name}!"
     self.how_much_time?
   end
 
@@ -28,6 +29,7 @@ class Cli
     if user_time == "exit"
       exit
     end
+    
   end
 
 end
