@@ -26,10 +26,3 @@ task :console => :environment do
 end
 
 #we needed to add the db name space set of rake tasks
-
-
-namespace :db do
-
-  desc "Migrate the db"
-    connection_details = YAML::load(File.open('config/database.yml'))
-    ActiveRecord::Base.establish_connection(connection_dtails)
