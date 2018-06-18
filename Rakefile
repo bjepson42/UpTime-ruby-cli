@@ -24,5 +24,3 @@ desc 'starts a console'
 task :console => :environment do
   Pry.start
 end
-
-#we needed to add the db name space set of rake tasks
