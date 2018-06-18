@@ -1,3 +1,6 @@
+require 'bundler/setup'
+Bundler.require
+
 require 'rake'
 #require 'active_record'
 require 'sinatra/activerecord'
