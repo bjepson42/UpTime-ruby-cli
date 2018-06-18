@@ -1,3 +1,6 @@
+require 'require_all'
+require_all 'app'
+require_relative "../config/environment.rb"
 #----User Seeds
 
 will = User.create(first_name: "William", last_name: "Ley", nick_name: "Will")
