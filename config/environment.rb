@@ -1,5 +1,6 @@
 require 'rake'
-require 'active_record'
+#require 'active_record'
+require 'sinatra/activerecord'
 require 'yaml/store'
 require 'ostruct'
 require 'date'
