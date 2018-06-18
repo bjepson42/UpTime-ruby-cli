@@ -1,3 +1,9 @@
+#----User Seeds
+
+will = User.create(first_name: "William", last_name: "Ley", nick_name: "Will")
+oren = User.create(first_name: "Oren", last_name: "Magid")
+
+
 #-----------Posibilites seeds
 # t.string   "name"
 # t.string   "description"
@@ -27,10 +33,6 @@ clean_house = Possibility.create(name: "Clean Around the House", description: "Y
 clean_work_space = Possibility.create(name: "Clean Around Your Work Space", description: "That pile of papers you keep shuffling or that work email you haven't sent yet. Sort them!", physical_intensity: 3, mental_intensity: 1, fun_index: 3, necessary_location: "work")
 
 watch_tv = Possibility.create(name: "Time to Veg!", description: "It's time to veg! Kick back and relax, worry free.", physical_intensity: 1, mental_intensity: 3, fun_index: 3, necessary_location: "home")
-
-
-will = User.create(first_name: "William", last_name: "Ley", nick_name: "Will")
-oren = User.create(first_name: "Oren", last_name: "Magid")
 
 play_instrument = Possibility.create(name: "Play a Musical Instrument", description: "Use this time to play a musical instrument, if indeed you play a musical instrument.", physical_intensity: 3, mental_intensity: 3, fun_index: 3, duration_in_minutes: nil, necessary_location: nil, others_required: nil)
 
