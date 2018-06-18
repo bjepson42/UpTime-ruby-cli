@@ -2,9 +2,9 @@ class User < ActiveRecord::Base
   has_many :activities
   has_many :possibilities, through: :activities
 
-  def suggest_random_possibility(duration_in_minutes:)
+  def suggest_random_possibility(duration)
     Possibility.all.select do |possibility|
-      possibility.duration_in_minutes == duration_in_minutes || possibility.duration_in_minutes == nil
+      possibility.duration_in_minutes == duration || possibility.duration_in_minutes == nil
     end.sample
   end
 
