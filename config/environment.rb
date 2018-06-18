@@ -7,8 +7,7 @@ require 'sinatra/activerecord'
 require 'yaml/store'
 require 'ostruct'
 require 'date'
-
-
+require_all 'app'
 
 ActiveRecord::Base.establish_connection(
   adapter: 'sqlite3',
