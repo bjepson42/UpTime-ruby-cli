@@ -6,6 +6,8 @@ require 'active_record'
 require 'pry'
 
 
+
+
 desc 'starts a console'
 task :console do
   Pry.start
