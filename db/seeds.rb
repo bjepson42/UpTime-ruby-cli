@@ -41,7 +41,7 @@ play_instrument = Possibility.create(name: "Play a Musical Instrument", descript
 
 listen_to_music = Possibility.create(name: "Listen to Music", description: "Crank up some music and have some fun.", physical_intensity: 3, mental_intensity: 3, fun_index: 3, duration_in_minutes: nil, necessary_location: nil, others_required: nil)
 
-meditate = Possibility.create(name: "Meditate", description: "Find a comfortable place to sit, and meditate. For some guidance, visit: http://how-to-meditate.org/", physical_intensity: 1, mental_intensity: 4, fun_index: 3, duration_in_minutes: nil, necessary_location: nil, others_required: nil)
+meditate = Possibility.create(name: "Meditate", description: "Find a comfortable place to sit and meditate. For some guidance, visit: http://how-to-meditate.org/", physical_intensity: 1, mental_intensity: 4, fun_index: 3, duration_in_minutes: nil, necessary_location: nil, others_required: nil)
 
 draw_a_picture = Possibility.create(name: "Draw a Picture", description: "Grab a pencil or pen and some paper. Draw a pretty picture, or just doodle.", physical_intensity: 1, mental_intensity: 2, fun_index: 4, duration_in_minutes: nil, necessary_location: nil, others_required: nil)
 

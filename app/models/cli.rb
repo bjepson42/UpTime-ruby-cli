@@ -17,6 +17,7 @@ class Cli
     puts ""
     puts "1. Yes"
     puts "2. No"
+    puts ""
     used_before = gets.strip
     if used_before == "1"
       self.user_already_exists
@@ -43,13 +44,13 @@ class Cli
       if self.user.nick_name
         puts ""
         puts ""
-        puts "Hi, #{self.user.nick_name}! We've found you in our records. Welcome to UPTIME!"
+        puts Rainbow("Hi, #{self.user.nick_name}! We've found you in our records.").underline
         puts ""
         puts ""
       else
         puts ""
         puts ""
-        puts "Hi, #{self.user.first_name}! We've found you in our records. Welcome to UPTIME!"
+        puts Rainbow("Hi, #{self.user.first_name}! We've found you in our records.").underline
         puts ""
         puts ""
       end
@@ -100,13 +101,13 @@ class Cli
       new_user_nickname = gets.chomp
       puts ""
       puts ""
-      puts "Well hello, #{new_user_nickname}. Let's get started!"
+      puts Rainbow("Well hello, #{new_user_nickname}! Let's get started!").underline
     elsif nick_name == "2"
       puts ""
       puts ""
-      puts "Okay, great! We'll just call you #{new_user_first_name}."
+      puts Rainbow("Okay, great! We'll just call you #{new_user_first_name}. Let's get started!").underline
     end
-    User.create(first_name: new_user_first_name, last_name: new_user_last_name, nick_name: new_user_nickname)
+    self.user = User.create(first_name: new_user_first_name, last_name: new_user_last_name, nick_name: new_user_nickname)
     self.how_much_time?
   end
 
@@ -158,7 +159,7 @@ class Cli
       self.possibility = self.user.suggest_random_possibility(60)
       puts ""
       puts ""
-      uts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline
+      puts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline
       puts ""
       self.accept_or_reject
     else
@@ -176,8 +177,8 @@ class Cli
     puts ""
     puts ""
     puts "1. Accept this possibility"
-    puts "2. Reject this possibility. Suggest another."
-    puts "3. Remove this possiblity from existance."
+    puts "2. Reject this possibility for now. Suggest another."
+    puts "3. Reject this possibility, and never show it to me again!"
     puts ""
     self.accepted_or_rejected = gets.strip
     self.create_activity
