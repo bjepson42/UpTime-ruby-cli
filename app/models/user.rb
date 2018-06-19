@@ -2,10 +2,13 @@ class User < ActiveRecord::Base
   has_many :activities
   has_many :possibilities, through: :activities
 
+#---working on moving this to Possibility class and Activity class
   def suggest_random_possibility(duration)
-    Possibility.all.select do |possibility|
-      possibility.duration_in_minutes == duration || possibility.duration_in_minutes == nil
-    end.sample
+    Activity.get_non_exclude_possiblity(self.id, duration)
+    
+    # Possibility.all.select do |possibility|
+    #   possibility.duration_in_minutes == duration || possibility.duration_in_minutes == nil
+    # end.sample
   end
 
 
@@ -16,6 +19,6 @@ class User < ActiveRecord::Base
 
   end
 
-#--------on long in, 
+#--------on long in,
 
 end
