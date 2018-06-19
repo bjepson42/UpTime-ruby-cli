@@ -24,7 +24,7 @@ class Activity < ActiveRecord::Base
 
     poss_array = Possibility.all.map{|poss_object| poss_object if !exclude_poss_ids.include?(poss_object.id)}.compact
 
-    if poss_array.length == 1
+    if poss_array.length <= 1
       puts "We have no more possibilities for you."
       exit
     end
