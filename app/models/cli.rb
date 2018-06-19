@@ -18,7 +18,10 @@ class Cli
     self.user = User.find_by(first_name: user_name_array[0], last_name: user_name_array[1])
     puts ""
     puts ""
-    puts "Hi, #{self.user.first_name}!"
+    puts "Hi, #{self.user.first_name}! Welcome to UPTIME!"
+    puts ""
+    puts ""
+    puts "You're here, because you have a bit of downtime, and you want to turn it into UPTIME!"
     puts ""
     puts ""
     self.how_much_time?
@@ -32,7 +35,7 @@ class Cli
     #how much time do you have 1. 15min, 2. 30 min, 3. 60 minutes
     puts ""
     puts ""
-    puts "How much time do you have?"
+    puts "About how much time do you have?"
     puts ""
     puts ""
     puts "1. 15 minutes"
@@ -57,6 +60,7 @@ class Cli
       puts ""
       puts ""
       puts "#{self.possibility.name}: #{self.possibility.description}"
+      puts ""
       puts ""
       self.accept_or_reject
     when "2"
