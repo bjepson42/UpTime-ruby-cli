@@ -1,13 +1,31 @@
 require 'pry'
 class Cli
-  attr_accessor :user, :possibility, :user_time, :accepted_or_rejected, :activity, :completed_activity, :suggest_another, :activity, :used_before
+  attr_accessor :user, :possibility, :user_time, :accepted_or_rejected, :activity, :completed_activity, :suggest_another, :activity
 
   def call
      self.start
   end
 #---get user object associated with current users
   def start
-    self.used_before
+    puts ""
+    puts ""
+    puts "Welcome to UPTIME!"
+    puts ""
+    puts "Have you used UPTIME on this computer before?"
+    puts ""
+    puts "1. Yes"
+    puts "2. No"
+    used_before = gets.strip
+    if used_before == "1"
+      self.user_already_exists
+    elsif used_before == "2"
+      self.create_new_user
+    end
+
+  end
+
+
+  def user_already_exists
     puts ""
     puts ""
     puts "Please type your name (first and last)."
@@ -25,6 +43,31 @@ class Cli
     puts ""
     puts ""
     self.how_much_time?
+  end
+
+  def create_new_user
+    puts ""
+    puts ""
+    puts "Tell us a little about yourself. It will only take a moment."
+    puts ""
+    puts ""
+    puts "What is your first name?"
+    new_user_first_name = gets.strip
+    puts ""
+    puts ""
+    puts "What is your last name?"
+    new_user_last_name = gets.strip
+    puts ""
+    puts ""
+    puts "Is there something you'd like to be called, other than your first name?"
+    puts ""
+    puts ""
+    puts "1. Yes"
+    puts "2. No"
+
+    new_user_nickname = gets.strip
+
+
   end
 
 
@@ -184,7 +227,7 @@ class Cli
       if user_response == ""
         puts "We missed that."
         get_rating
-      end 
+      end
       self.activity.rate(user_response)
     end
 

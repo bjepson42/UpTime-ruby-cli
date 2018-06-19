@@ -14,14 +14,6 @@ ActiveRecord::Schema.define(version: 3) do
 
   create_table "activities", force: :cascade do |t|
     t.string   "status"
-    t.string   "name"
-    t.string   "description"
-    t.integer  "physical_intensity"
-    t.integer  "mental_intensity"
-    t.integer  "fun_index"
-    t.integer  "duration_in_minutes"
-    t.string   "necessary_location"
-    t.boolean  "others_required"
     t.integer  "user_id"
     t.integer  "possibility_id"
     t.integer  "rating"
