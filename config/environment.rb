@@ -16,4 +16,6 @@ ActiveRecord::Base.establish_connection(
   database: "db/uptime.db"
 )
 
-ActiveRecord::Base.logger = Logger.new("log.log")
+#ActiveRecord::Base.logger = Logger.new("log.log")
+#------This should elminate the logger showing sql
+ActiveRecord::Base.logger.level = 1 # or Logger::INFO
