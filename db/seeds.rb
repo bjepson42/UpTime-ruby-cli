@@ -55,3 +55,5 @@ take_a_nap = Possibility.create(name: "Take a Nap", description: "Find a quiet p
 play_a_video_game = Possibility.create(name: "Play a Video Game", description: "Take this time to have some fun playing a video game. Try: http://www.addictinggames.com/", physical_intensity: 3, mental_intensity: 3, fun_index: 3, duration_in_minutes: nil, necessary_location: nil, others_required: nil)
 
 write = Possibility.create(name: "Do Some Writing", description: "Grab a pencil and some paper, or open up a word processor, and spend some time writing. Be creative.", physical_intensity: 1, mental_intensity: 4, fun_index: 3, duration_in_minutes: nil, necessary_location: nil, others_required: nil)
+
+new_possibility = Possibility.create(name: "Create a New Possibility for the Future", description: "Take a few minutes to create a new possibility from scratch.", physical_intensity: 1, mental_intensity: 4, fun_index: 3, duration_in_minutes: 15, necessary_location: nil, others_required: nil)

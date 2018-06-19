@@ -1,6 +1,6 @@
 require 'pry'
 class Cli
-  attr_accessor :user, :possibility, :user_time, :accepted_or_rejected, :activity, :completed_activity, :suggest_another, :activity
+  attr_accessor :user, :possibility, :user_time, :accepted_or_rejected, :activity, :completed_activity, :suggest_another, :activity, :new_possibility_name, :new_possibility_description, :new_possibility_duration, :new_possibility_required_location, :new_possibility
 
   def call
      self.start
@@ -185,8 +185,44 @@ class Cli
   def create_activity
     #------accepts activity
     if self.accepted_or_rejected == "1"
+      if self.possibility.name == "Create a New Possibility for the Future"
+        puts ""
+        puts ""
+        puts "Okay, let's begin!"
+        puts ""
+        puts "What should we call your new possibility?"
+        self.new_possibility_name = gets.strip
+        puts ""
+        puts "Write a brief description of your new possibility."
+        self.new_possibility_description = gets.strip
+        puts ""
+        puts "About how long should it take to complete this possibility?"
+        puts ""
+        puts ""
+        puts "1. 15 minutes"
+        puts "2. 30 minutes"
+        puts "3. 60 minutes"
+        puts ""
+        puts ""
+        puts "Please enter a number."
+        self.new_possibility_duration = gets.strip
+        puts ""
+        puts "Is this possibility something that must be completed at home, at work, or anywhere?"
+        puts ""
+        puts ""
+        puts "1. At home"
+        puts "2. At work"
+        puts "3. Anywhere"
+        puts ""
+        puts ""
+        puts "Please enter a number."
+        self.new_possibility_required_location = gets.strip
+        create_new_possibility
+
+      else
       self.activity = Activity.create(status: "accepted", user_id: self.user.id, possibility_id: self.possibility.id)
       self.complete_activity
+      end
 
     #-------reject activity
     elsif self.accepted_or_rejected == "2"
@@ -207,51 +243,98 @@ class Cli
 
   end
 
-  def complete_activity
-    puts ""
-    puts ""
-    puts "Okay, now get busy!"
-    puts ""
-    puts "When you are finished, come back and press:"
-    puts ""
-    puts ""
-    puts "1. If you have completed this activity"
-    puts "2. If you got distracted and failed to complete the activity"
-    puts ""
-    puts ""
-    self.completed_activity = gets.strip
+  def create_new_possibility
 
-    if self.completed_activity == "1"
-      self.activity.status = "accepted and completed"
-      self.activity.save
-      #we need to add functionality to ask them to rate the activity
+    self.new_possibility = Possibility.create(name: self.new_possibility_name, description: self.new_possibility_description)
+
+    if new_possibility_duration == "1"
+      self.new_possibility.duration_in_minutes = 15
+    elsif new_possibility_duration == "2"
+      self.new_possibility.duration_in_minutes = 30
+    elsif new_possibility_duration == "3"
+      self.new_possibility.duration_in_minutes = 30
+    end
+
+    if new_possibility_required_location == "1"
+      self.new_possibility.necessary_location = "home"
+    elsif new_possibility_duration == "2"
+      self.new_possibility.necessary_location = "work"
+    elsif new_possibility_duration == "3"
+      self.new_possibility.necessary_location = nil
+    end
+    self.new_possibility.save
+
+    self.activity = Activity.create(status: "accepted", user_id: self.user.id, possibility_id: self.possibility.id)
+    self.activity.status = "accepted and completed"
+    self.activity.save
+    puts ""
+    puts ""
+    puts "Awesome! You just created a new possibility for the future!"
+    puts ""
+    puts ""
+    self.get_rating
+    puts ""
+    puts "Thanks for your rating!"
+    puts ""
+    puts "Would you like us to suggest a new possibility?"
+    puts ""
+    puts "1. Yes, give me more."
+    puts "2. No, I've had enough."
+    puts ""
+    puts ""
+    self.suggest_another = gets.strip
+    self.continue?
+
+
+  end
+
+  def complete_activity
+    if self.activity.status != "accepted and completed"
       puts ""
-      self.get_rating
       puts ""
-      puts "Thanks for your rating!"
+      puts "Okay, now get busy!"
       puts ""
-      puts "Would you like us to suggest a new possibility?"
-      puts ""
-      puts "1. Yes, give me more."
-      puts "2. No, I've had enough."
+      puts "When you are finished, come back and press:"
       puts ""
       puts ""
-      self.suggest_another = gets.strip
-      self.continue?
-    elsif self.completed_activity == "2"
-      self.activity.status = "accepted but not completed"
-      self.activity.save
+      puts "1. If you have completed this activity"
+      puts "2. If you got distracted and failed to complete the activity"
       puts ""
       puts ""
-      puts "Would you like us to suggest a new possibility?"
-      puts ""
-      puts ""
-      puts "1. Yes, give me more."
-      puts "2. No, I've had enough. Let's quit the program."
-      puts ""
-      puts ""
-      self.suggest_another = gets.strip
-      self.continue?
+      self.completed_activity = gets.strip
+    else
+      if self.completed_activity == "1"
+        self.activity.status = "accepted and completed"
+        self.activity.save
+        #we need to add functionality to ask them to rate the activity
+        puts ""
+        self.get_rating
+        puts ""
+        puts "Thanks for your rating!"
+        puts ""
+        puts "Would you like us to suggest a new possibility?"
+        puts ""
+        puts "1. Yes, give me more."
+        puts "2. No, I've had enough."
+        puts ""
+        puts ""
+        self.suggest_another = gets.strip
+        self.continue?
+      elsif self.completed_activity == "2"
+        self.activity.status = "accepted but not completed"
+        self.activity.save
+        puts ""
+        puts ""
+        puts "Would you like us to suggest a new possibility?"
+        puts ""
+        puts ""
+        puts "1. Yes, give me more."
+        puts "2. No, I've had enough. Let's quit the program."
+        puts ""
+        puts ""
+        self.suggest_another = gets.strip
+        self.continue?
+      end
     end
   end
 

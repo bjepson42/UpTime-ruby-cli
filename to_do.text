@@ -8,7 +8,7 @@
 # User log in create or find user
 # Bug User mistype crashes program
 
-User able to 'delete' possiblity from their possibilities
+#User able to 'delete' possiblity from their possibilities
 
 #--------next
 # if user has nick_name use that in communication
