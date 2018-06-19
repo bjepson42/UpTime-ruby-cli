@@ -135,6 +135,7 @@ class Cli
 
     if self.completed_activity == "1"
       self.activity.status = "accepted and completed"
+      #we need to add functionality to ask them to rate the activity
       puts ""
       puts ""
       puts "Would you like us to suggest a new possibility?"
