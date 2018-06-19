@@ -1,7 +1,7 @@
------------Block User Seeing response
-      Added in environment.rb
-      ActiveRecord::Base.logger.level = 1 # or Logger::INFO
-      the .level errored rake so set ActiveRecord::Base.logger = nil
+# -----------Block User Seeing response
+#       Added in environment.rb
+#       ActiveRecord::Base.logger.level = 1 # or Logger::INFO
+#       the .level errored rake so set ActiveRecord::Base.logger = nil
 
 
 #--------Stuff to Do first
@@ -11,7 +11,7 @@
 User able to 'delete' possiblity from their possibilities
 
 #--------next
-if user has nick_name use that in communication
+# if user has nick_name use that in communication
 
 
 Scooter user create possibility
