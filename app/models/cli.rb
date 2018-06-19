@@ -2,7 +2,7 @@ require 'pry'
 require 'rainbow'
 
 class Cli
-  attr_accessor :user, :possibility, :user_time, :accepted_or_rejected, :activity, :completed_activity, :suggest_another, :activity, :new_possibility_name, :new_possibility_description, :new_possibility_duration, :new_possibility_required_location, :new_possibility
+  attr_accessor :user, :possibility, :user_time, :accepted_or_rejected, :activity, :completed_activity, :suggest_another, :activity, :new_possibility_name, :new_possibility_description, :new_possibility_duration, :new_possibility_required_location, :new_possibility, :limit_place
 
   def call
      self.start
@@ -56,7 +56,7 @@ class Cli
       puts "You're here, because you have a bit of downtime, and you want to turn it into UPTIME!"
       puts ""
       puts ""
-      self.how_much_time?
+      self.where_are_you_at?
     else
       puts ""
       puts ""
@@ -107,16 +107,35 @@ class Cli
       puts "Okay, great! We'll just call you #{new_user_first_name}."
     end
     User.create(first_name: new_user_first_name, last_name: new_user_last_name, nick_name: new_user_nickname)
-    self.how_much_time?
+    self.where_are_you_at?
   end
+
+#------user sets location constraint->moves to time constraint
 
   def where_are_you_at?
-    
+    puts "Where are you at?"
+    puts "1. home?"
+    puts "2. work?"
+    puts "3. somewhere else?"
+    puts "Please enter a number."
+    user_response = gets.strip
+    if user_response == "1"
+      self.limit_place = "home"
+      self.how_much_time?
+    elsif user_response == "2"
+      self.limit_place = "work"
+      self.how_much_time?
+    elsif user_response == "3"
+      self.limit_place = "not work or home"
+      self.how_much_time?
+    end
   end
 
 
 
-#---get time constraint
+
+
+#---user sets time constraint ->moves to gen. possibilities
   def how_much_time?
     #how much time do you have 1. 15min, 2. 30 min, 3. 60 minutes
     puts ""
@@ -139,10 +158,11 @@ class Cli
     self.suggest_possibility
   end
 
+#----generates possibilities and accept/reject from user
   def suggest_possibility
     case self.user_time
     when "1"
-      self.possibility = self.user.suggest_random_possibility(15)
+      self.possibility = self.user.suggest_random_possibility(15, self.limit_place)
       puts ""
       puts ""
 
@@ -151,14 +171,14 @@ class Cli
       puts ""
       self.accept_or_reject
     when "2"
-      self.possibility =  self.user.suggest_random_possibility(30)
+      self.possibility =  self.user.suggest_random_possibility(30, self.limit_place)
       puts ""
       puts ""
       puts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline
       puts ""
       self.accept_or_reject
     when "3"
-      self.possibility = self.user.suggest_random_possibility(60)
+      self.possibility = self.user.suggest_random_possibility(60, self.limit_place)
       puts ""
       puts ""
       uts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline

@@ -8,22 +8,20 @@
 # User log in create or find user
 # Bug User mistype crashes program
 
-#User able to 'delete' possiblity from their possibilities
+#User able to 'delete' possibility from their possibilities
 
 #--------next
 # if user has nick_name use that in communication
 
 
-Scooter user create possibility
-  ?available for everyone?
-  -put in a random option to pull from this list
-  -create new table for This user one to many user_possibilities
-  -under possibility selection if user_pos returned as default then sample user_possibilities table
+#Scooter user create possibility
+  ?available for everyone?--- all users goes into full possibility pool
+  irrelevant-put in a random option to pull from this list
+  irrelevant-create new table for This user one to many user_possibilities
+  irrelevant-under possibility selection if user_pos returned as default then sample user_possibilities table
 
 SC display deleted options chance to put back in loop
 SC display user stats for that possibility on suggest
+SC multiple time inputs, location dependencies.
 
 ?password?
-
-
-SC multiple time inputs, location dependencies.
