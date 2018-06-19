@@ -34,15 +34,30 @@ class Cli
     user_name_response = gets.chomp
     user_name_array = user_name_response.split(" ")
     self.user = User.find_by(first_name: user_name_array[0], last_name: user_name_array[1])
-    puts ""
-    puts ""
-    puts "Hi, #{self.user.first_name}! Welcome to UPTIME!"
-    puts ""
-    puts ""
-    puts "You're here, because you have a bit of downtime, and you want to turn it into UPTIME!"
-    puts ""
-    puts ""
-    self.how_much_time?
+    if self.user
+      puts ""
+      puts ""
+      puts "Hi, #{self.user.first_name}! We've found you in our records. Welcome to UPTIME!"
+      puts ""
+      puts ""
+      puts "You're here, because you have a bit of downtime, and you want to turn it into UPTIME!"
+      puts ""
+      puts ""
+      self.how_much_time?
+    else
+      puts ""
+      puts ""
+      puts "We could not find you in our records. Are you sure you've used UPTIME on this computer before?"
+      puts ""
+      puts "1. Yes. Perhaps I mispelled my name. I'll try again."
+      puts "2. No. I better tell you more about myself."
+      double_check_used_before = gets.strip
+      if double_check_used_before == "1"
+        self.user_already_exists
+      elsif double_check_used_before == "2"
+        self.create_new_user
+      end
+    end
   end
 
   def create_new_user
@@ -64,10 +79,22 @@ class Cli
     puts ""
     puts "1. Yes"
     puts "2. No"
-
-    new_user_nickname = gets.strip
-
-
+    nick_name = gets.strip
+    if nick_name == "1"
+      puts ""
+      puts ""
+      puts "What would you like us to call you? (In other words, what is your nickname?)"
+      new_user_nickname = gets.chomp
+      puts ""
+      puts ""
+      puts "Well hello, #{new_user_nickname}. Let's get started!"
+    elsif nick_name == "2"
+      puts ""
+      puts ""
+      puts "Okay, great! We'll just call you #{new_user_first_name}."
+    end
+    User.create(first_name: new_user_first_name, last_name: new_user_last_name, nick_name: new_user_nickname)
+    self.how_much_time?
   end
 
 
