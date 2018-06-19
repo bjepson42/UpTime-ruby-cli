@@ -18,4 +18,6 @@ ActiveRecord::Base.establish_connection(
 
 #ActiveRecord::Base.logger = Logger.new("log.log")
 #------This should elminate the logger showing sql
-ActiveRecord::Base.logger.level = 1 # or Logger::INFO
+old_logger = ActiveRecord::Base.logger
+ActiveRecord::Base.logger = nil
+#ActiveRecord::Base.logger.level = Logger::INFO #or 1

@@ -1,1 +1,3 @@
-Block User Seeing response
+-----------Block User Seeing response
+      Added in environment.rb
+      ActiveRecord::Base.logger.level = 1 # or Logger::INFO
