@@ -1,1 +1,26 @@
-Block User Seeing response
+-----------Block User Seeing response
+      Added in environment.rb
+      ActiveRecord::Base.logger.level = 1 # or Logger::INFO
+      the .level errored rake so set ActiveRecord::Base.logger = nil
+
+
+#--------Stuff to Do first
+User log in create or find user
+Bug User mistype crashes program
+
+User able to 'delete' possiblity from their possibilities
+
+#--------next
+if user has nick_name use that in communication
+
+
+Scooter user create possibility
+  ?available for everyone?
+  -put in a random option to pull from this list
+  -create new table for This user one to many user_possibilites
+  -under possiblity selection if user_pos returned as default then sample user_possibilites table
+
+SC display deleted options chance to put back in loop
+Sports Car display user stats for that possiblity on suggest
+
+?password?

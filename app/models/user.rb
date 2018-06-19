@@ -16,4 +16,6 @@ class User < ActiveRecord::Base
 
   end
 
+#--------on long in, 
+
 end
