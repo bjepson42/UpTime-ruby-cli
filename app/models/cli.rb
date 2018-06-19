@@ -137,9 +137,11 @@ class Cli
       self.activity.status = "accepted and completed"
       #we need to add functionality to ask them to rate the activity
       puts ""
+      self.get_rating
+      puts ""
+      puts "Thanks for your rating!"
       puts ""
       puts "Would you like us to suggest a new possibility?"
-      puts ""
       puts ""
       puts "1. Yes, give me more."
       puts "2. No, I've had enough."
@@ -165,11 +167,23 @@ class Cli
 
 
     def continue?
-    if self.suggest_another == "1"
-      self.suggest_possibility
-    elsif self.suggest_another == "2"
-      exit
+      if self.suggest_another == "1"
+        self.suggest_possibility
+      elsif self.suggest_another == "2"
+        exit
+      end
     end
-  end
+
+#------Asks for rating
+    def get_rating
+      puts "How much did you like doing #{self.activity.name.downcase}?"
+      puts "On a scale from 1-5?"
+      user_response = gets.strip
+      if user_response == ""
+        puts "We missed that."
+        get_rating
+      end 
+      self.activity.rate(user_response)
+    end
 
 end

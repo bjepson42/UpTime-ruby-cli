@@ -16,8 +16,9 @@ ActiveRecord::Base.establish_connection(
   database: "db/uptime.db"
 )
 
-#ActiveRecord::Base.logger = Logger.new("log.log")
+
+#--pushes all logs into Application Log
+ActiveRecord::Base.logger = Logger.new("log.log")
 #------This should elminate the logger showing sql
-old_logger = ActiveRecord::Base.logger
-ActiveRecord::Base.logger = nil
+# ActiveRecord::Base.logger = nil
 #ActiveRecord::Base.logger.level = Logger::INFO #or 1

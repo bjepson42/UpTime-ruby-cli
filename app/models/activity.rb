@@ -4,9 +4,13 @@ class Activity < ActiveRecord::Base
 
 #-------Set activity rating
 
-  def activity_rating(user_response)
-    self.rating = user_response.to_i
-  end 
+  def rate(user_response)
+    user_response= user_response.to_i
+    user_response = 5 if user_response > 5
+    user_response = 1 if user_response < 1
+    self.rating = user_response
+    self.save
+  end
 
 
 
