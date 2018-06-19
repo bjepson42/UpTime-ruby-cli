@@ -269,7 +269,8 @@ class Cli
   def get_rating
 
     puts "How much did you like #{self.possibility.name.downcase}?"
-    puts "On a scale from 1-5?"
+    puts ""
+    puts "Rate this activity on a scale of 1 through 5."
     user_response = gets.strip
     if user_response == ""
       puts "We missed that."
