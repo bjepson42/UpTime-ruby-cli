@@ -9,3 +9,4 @@ gem "rspec"
 gem "database_cleaner"
 gem "activerecord"
 gem "rake"
+gem 'rainbow'

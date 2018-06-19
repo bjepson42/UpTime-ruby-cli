@@ -1,4 +1,6 @@
 require 'pry'
+require 'rainbow'
+
 class Cli
   attr_accessor :user, :possibility, :user_time, :accepted_or_rejected, :activity, :completed_activity, :suggest_another, :activity, :new_possibility_name, :new_possibility_description, :new_possibility_duration, :new_possibility_required_location, :new_possibility
 
@@ -9,7 +11,7 @@ class Cli
   def start
     puts ""
     puts ""
-    puts "Welcome to UPTIME!"
+    puts Rainbow("Welcome to UPTIME!").bright.underline
     puts ""
     puts "Have you used UPTIME on this computer before?"
     puts ""
@@ -140,7 +142,8 @@ class Cli
       self.possibility = self.user.suggest_random_possibility(15)
       puts ""
       puts ""
-      puts "#{self.possibility.name}: #{self.possibility.description}"
+
+      puts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline
       puts ""
       puts ""
       self.accept_or_reject
@@ -148,14 +151,14 @@ class Cli
       self.possibility =  self.user.suggest_random_possibility(30)
       puts ""
       puts ""
-      puts "#{self.possibility.name}: #{self.possibility.description}"
+      puts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline
       puts ""
       self.accept_or_reject
     when "3"
       self.possibility = self.user.suggest_random_possibility(60)
       puts ""
       puts ""
-      puts "#{self.possibility.name}: #{self.possibility.description}"
+      uts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline
       puts ""
       self.accept_or_reject
     else
@@ -207,12 +210,13 @@ class Cli
         puts "Please enter a number."
         self.new_possibility_duration = gets.strip
         puts ""
-        puts "Is this possibility something that must be completed at home, at work, or anywhere?"
+        puts "Is this possibility something I can do at home, at work, anywhere but work, or anywhere at all?"
         puts ""
         puts ""
-        puts "1. At home"
-        puts "2. At work"
-        puts "3. Anywhere"
+        puts "1. I can only do this at home"
+        puts "2. I can only do this at work"
+        puts "3. I can do this anywhere but work"
+        puts "4. I can do this anywhere at all"
         puts ""
         puts ""
         puts "Please enter a number."
@@ -260,6 +264,8 @@ class Cli
     elsif new_possibility_duration == "2"
       self.new_possibility.necessary_location = "work"
     elsif new_possibility_duration == "3"
+      self.new_possibility.necessary_location = "not work"
+    elsif new_possibility_duration == "4"
       self.new_possibility.necessary_location = nil
     end
     self.new_possibility.save
@@ -302,7 +308,7 @@ class Cli
       puts ""
       puts ""
       self.completed_activity = gets.strip
-    else
+
       if self.completed_activity == "1"
         self.activity.status = "accepted and completed"
         self.activity.save
