@@ -34,12 +34,23 @@ class Cli
     user_name_response = gets.chomp
     user_name_array = user_name_response.split(" ")
     self.user = User.find_by(first_name: user_name_array[0], last_name: user_name_array[1])
+    if self.user == nil
+      self.user = User.find_by(nick_name: user_name_array[0], last_name: user_name_array[1])
+    end
     if self.user
-      puts ""
-      puts ""
-      puts "Hi, #{self.user.first_name}! We've found you in our records. Welcome to UPTIME!"
-      puts ""
-      puts ""
+      if self.user.nick_name
+        puts ""
+        puts ""
+        puts "Hi, #{self.user.nick_name}! We've found you in our records. Welcome to UPTIME!"
+        puts ""
+        puts ""
+      else
+        puts ""
+        puts ""
+        puts "Hi, #{self.user.first_name}! We've found you in our records. Welcome to UPTIME!"
+        puts ""
+        puts ""
+      end
       puts "You're here, because you have a bit of downtime, and you want to turn it into UPTIME!"
       puts ""
       puts ""
