@@ -135,6 +135,7 @@ class Cli
 
     if self.completed_activity == "1"
       self.activity.status = "accepted and completed"
+      self.activity.save
       #we need to add functionality to ask them to rate the activity
       puts ""
       puts ""
@@ -149,6 +150,7 @@ class Cli
       self.continue?
     elsif self.completed_activity == "2"
       self.activity.status = "accepted but not completed"
+      self.activity.save
       puts ""
       puts ""
       puts "Would you like us to suggest a new possibility?"
