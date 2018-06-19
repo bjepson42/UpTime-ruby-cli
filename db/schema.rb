@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 3) do
+ActiveRecord::Schema.define(version: 4) do
 
   create_table "activities", force: :cascade do |t|
     t.string   "status"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 3) do
     t.integer  "rating"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "exclude",             default: false
   end
 
   create_table "possibilities", force: :cascade do |t|
