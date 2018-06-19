@@ -1,17 +1,26 @@
 require 'pry'
 class Cli
-  attr_accessor :user, :possibility, :user_time, :accepted_or_rejected, :activity, :completed_activity, :suggest_another, :activity
+  attr_accessor :user, :possibility, :user_time, :accepted_or_rejected, :activity, :completed_activity, :suggest_another, :activity, :used_before
 
   def call
      self.start
   end
 #---get user object associated with current users
   def start
-    puts "Please give us your first and last name"
+    self.used_before
+    puts ""
+    puts ""
+    puts "Please type your name (first and last)."
+    puts ""
+    puts ""
     user_name_response = gets.chomp
     user_name_array = user_name_response.split(" ")
     self.user = User.find_by(first_name: user_name_array[0], last_name: user_name_array[1])
-    puts "Hi #{self.user.first_name}!"
+    puts ""
+    puts ""
+    puts "Hi, #{self.user.first_name}!"
+    puts ""
+    puts ""
     self.how_much_time?
   end
 
@@ -21,11 +30,19 @@ class Cli
 #---get time constraint
   def how_much_time?
     #how much time do you have 1. 15min, 2. 30 min, 3. 60 minutes
+    puts ""
+    puts ""
     puts "How much time do you have?"
+    puts ""
+    puts ""
     puts "1. 15 minutes"
     puts "2. 30 minutes"
     puts "3. 60 minutes"
+    puts ""
+    puts ""
     puts "Please enter a number."
+    puts ""
+    puts ""
     self.user_time = gets.strip
     if user_time == "exit"
       exit
@@ -37,18 +54,24 @@ class Cli
     case self.user_time
     when "1"
       self.possibility = self.user.suggest_random_possibility(15)
-      puts self.possibility.name
-      puts self.possibility.description
+      puts ""
+      puts ""
+      puts "#{self.possibility.name}: #{self.possibility.description}"
+      puts ""
       self.accept_or_reject
     when "2"
       self.possibility =  self.user.suggest_random_possibility(30)
-      puts self.possibility.name
-      puts self.possibility.description
+      puts ""
+      puts ""
+      puts "#{self.possibility.name}: #{self.possibility.description}"
+      puts ""
       self.accept_or_reject
     when "3"
       self.possibility = self.user.suggest_random_possibility(60)
-      puts self.possibility.name
-      puts self.possibility.description
+      puts ""
+      puts ""
+      puts "#{self.possibility.name}: #{self.possibility.description}"
+      puts ""
       self.accept_or_reject
     else
       self.how_much_time?
@@ -59,9 +82,15 @@ class Cli
 #------Accept or reject, save as Activity regardless
 
   def accept_or_reject
+    puts ""
+    puts ""
     puts "Would you like to accept or reject this possibility?"
+    puts ""
+    puts ""
     puts "1. Accept this possibility"
     puts "2. Reject this possibility. Suggest another."
+    puts ""
+    puts ""
     self.accepted_or_rejected = gets.strip
     self.create_activity
   end
@@ -77,30 +106,53 @@ class Cli
     elsif self.accepted_or_rejected == "2"
       self.activity = Activity.create(status: "rejected", name: self.possibility.name, description: self.possibility.description, physical_intensity: self.possibility.physical_intensity, mental_intensity: self.possibility.mental_intensity, fun_index: self.possibility.fun_index, duration_in_minutes: self.possibility.duration_in_minutes, necessary_location: self.possibility.necessary_location, user_id: self.user.id, possibility_id: self.possibility.id)
 
+      puts ""
+      puts ""
       puts "Suggesting another possibility..."
+      puts ""
+      puts ""
       self.suggest_possibility
     end
   end
 
   def complete_activity
+    puts ""
+    puts ""
     puts "Okay, now get busy!"
+    puts ""
     puts "When you are finished, come back and press:"
+    puts ""
+    puts ""
     puts "1. If you have completed this activity"
     puts "2. If you got distracted and failed to complete the activity"
+    puts ""
+    puts ""
     self.completed_activity = gets.strip
 
     if self.completed_activity == "1"
       self.activity.status = "accepted and completed"
+      puts ""
+      puts ""
       puts "Would you like us to suggest a new possibility?"
+      puts ""
+      puts ""
       puts "1. Yes, give me more."
       puts "2. No, I've had enough."
+      puts ""
+      puts ""
       self.suggest_another = gets.strip
       self.continue?
     elsif self.completed_activity == "2"
       self.activity.status = "accepted but not completed"
+      puts ""
+      puts ""
       puts "Would you like us to suggest a new possibility?"
+      puts ""
+      puts ""
       puts "1. Yes, give me more."
       puts "2. No, I've had enough. Let's quit the program."
+      puts ""
+      puts ""
       self.suggest_another = gets.strip
       self.continue?
     end
