@@ -1,6 +1,7 @@
 require 'pry'
 class Cli
-  attr_accessor :user, :possibility, :user_time, :accepted_or_rejected
+  attr_accessor :user, :possibility, :user_time, :accepted_or_rejected, :activity, :completed_activity, :suggest_another, :activity
+
   def call
      self.start
   end
@@ -68,20 +69,50 @@ class Cli
 #------after accept don't autoquit ask if they want another activity or to quit
 
   def create_activity
-
     if self.accepted_or_rejected == "1"
-      activity = Activity.create(status: "accepted", name: self.possibility.name, description: self.possibility.description, physical_intensity: self.possibility.physical_intensity, mental_intensity: self.possibility.mental_intensity, fun_index: self.possibility.fun_index, duration_in_minutes: self.possibility.duration_in_minutes, necessary_location: self.possibility.necessary_location, user_id: self.user.id, possibility_id: self.possibility.id)
-      
+      self.activity = Activity.create(status: "accepted", name: self.possibility.name, description: self.possibility.description, physical_intensity: self.possibility.physical_intensity, mental_intensity: self.possibility.mental_intensity, fun_index: self.possibility.fun_index, duration_in_minutes: self.possibility.duration_in_minutes, necessary_location: self.possibility.necessary_location, user_id: self.user.id, possibility_id: self.possibility.id)
+      self.complete_activity
+
+
     elsif self.accepted_or_rejected == "2"
-      activity = Activity.create(status: "rejected", name: self.possibility.name, description: self.possibility.description, physical_intensity: self.possibility.physical_intensity, mental_intensity: self.possibility.mental_intensity, fun_index: self.possibility.fun_index, duration_in_minutes: self.possibility.duration_in_minutes, necessary_location: self.possibility.necessary_location, user_id: self.user.id, possibility_id: self.possibility.id)
+      self.activity = Activity.create(status: "rejected", name: self.possibility.name, description: self.possibility.description, physical_intensity: self.possibility.physical_intensity, mental_intensity: self.possibility.mental_intensity, fun_index: self.possibility.fun_index, duration_in_minutes: self.possibility.duration_in_minutes, necessary_location: self.possibility.necessary_location, user_id: self.user.id, possibility_id: self.possibility.id)
 
       puts "Suggesting another possibility..."
       self.suggest_possibility
-
     end
+  end
+
+  def complete_activity
+    puts "Okay, now get busy!"
+    puts "When you are finished, come back and press:"
+    puts "1. If you have completed this activity"
+    puts "2. If you got distracted and failed to complete the activity"
+    self.completed_activity = gets.strip
+
+    if self.completed_activity == "1"
+      self.activity.status = "accepted and completed"
+      puts "Would you like us to suggest a new possibility?"
+      puts "1. Yes, give me more."
+      puts "2. No, I've had enough."
+      self.suggest_another = gets.strip
+      self.continue?
+    elsif self.completed_activity == "2"
+      self.activity.status = "accepted but not completed"
+      puts "Would you like us to suggest a new possibility?"
+      puts "1. Yes, give me more."
+      puts "2. No, I've had enough. Let's quit the program."
+      self.suggest_another = gets.strip
+      self.continue?
+    end
+  end
 
 
-
+    def continue?
+    if self.suggest_another == "1"
+      self.suggest_possibility
+    elsif self.suggest_another == "2"
+      exit
+    end
   end
 
 end
