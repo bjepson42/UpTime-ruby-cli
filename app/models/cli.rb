@@ -93,7 +93,7 @@ class Cli
     puts ""
     puts "1. Accept this possibility"
     puts "2. Reject this possibility. Suggest another."
-    puts ""
+    puts "3. Remove this possiblity from existance."
     puts ""
     self.accepted_or_rejected = gets.strip
     self.create_activity
@@ -102,21 +102,28 @@ class Cli
 #------after accept don't autoquit ask if they want another activity or to quit
 
   def create_activity
+    #------accepts activity
     if self.accepted_or_rejected == "1"
-      self.activity = Activity.create(status: "accepted", name: self.possibility.name, description: self.possibility.description, physical_intensity: self.possibility.physical_intensity, mental_intensity: self.possibility.mental_intensity, fun_index: self.possibility.fun_index, duration_in_minutes: self.possibility.duration_in_minutes, necessary_location: self.possibility.necessary_location, user_id: self.user.id, possibility_id: self.possibility.id)
+      self.activity = Activity.create(status: "accepted", user_id: self.user.id, possibility_id: self.possibility.id)
       self.complete_activity
 
-
+    #-------reject activity
     elsif self.accepted_or_rejected == "2"
-      self.activity = Activity.create(status: "rejected", name: self.possibility.name, description: self.possibility.description, physical_intensity: self.possibility.physical_intensity, mental_intensity: self.possibility.mental_intensity, fun_index: self.possibility.fun_index, duration_in_minutes: self.possibility.duration_in_minutes, necessary_location: self.possibility.necessary_location, user_id: self.user.id, possibility_id: self.possibility.id)
-
+      self.activity = Activity.create(status: "rejected", user_id: self.user.id, possibility_id: self.possibility.id)
       puts ""
       puts ""
       puts "Suggesting another possibility..."
       puts ""
       puts ""
       self.suggest_possibility
+        #--rejects and exclude
+    elsif self.accepted_or_rejected == "3"
+      self.activity = Activity.create(status: "rejected", user_id: self.user.id, possibility_id: self.possibility.id, exclude: true)
+      puts ""
+      puts "Got it! I won't show that possiblity again."
+      self.suggest_possibility
     end
+
   end
 
   def complete_activity
@@ -166,24 +173,25 @@ class Cli
   end
 
 
-    def continue?
-      if self.suggest_another == "1"
-        self.suggest_possibility
-      elsif self.suggest_another == "2"
-        exit
-      end
+  def continue?
+    if self.suggest_another == "1"
+      self.suggest_possibility
+    elsif self.suggest_another == "2"
+      exit
     end
+  end
 
 #------Asks for rating
-    def get_rating
-      puts "How much did you like doing #{self.activity.name.downcase}?"
-      puts "On a scale from 1-5?"
-      user_response = gets.strip
-      if user_response == ""
-        puts "We missed that."
-        get_rating
-      end 
-      self.activity.rate(user_response)
+  def get_rating
+
+    puts "How much did you like #{self.possibility.name.downcase}?"
+    puts "On a scale from 1-5?"
+    user_response = gets.strip
+    if user_response == ""
+      puts "We missed that."
+      get_rating
     end
+    self.activity.rate(user_response)
+  end
 
 end

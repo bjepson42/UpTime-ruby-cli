@@ -14,20 +14,12 @@ ActiveRecord::Schema.define(version: 4) do
 
   create_table "activities", force: :cascade do |t|
     t.string   "status"
-    t.string   "name"
-    t.string   "description"
-    t.integer  "physical_intensity"
-    t.integer  "mental_intensity"
-    t.integer  "fun_index"
-    t.integer  "duration_in_minutes"
-    t.string   "necessary_location"
-    t.boolean  "others_required"
     t.integer  "user_id"
     t.integer  "possibility_id"
     t.integer  "rating"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "exclude",             default: false
+    t.boolean  "exclude",        default: false
   end
 
   create_table "possibilities", force: :cascade do |t|
