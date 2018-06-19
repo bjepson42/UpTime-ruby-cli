@@ -8,7 +8,7 @@
 # User log in create or find user
 # Bug User mistype crashes program
 
-User able to 'delete' possiblity from their possibilities
+#User able to 'delete' possiblity from their possibilities
 
 #--------next
 # if user has nick_name use that in communication
@@ -17,10 +17,13 @@ User able to 'delete' possiblity from their possibilities
 Scooter user create possibility
   ?available for everyone?
   -put in a random option to pull from this list
-  -create new table for This user one to many user_possibilites
-  -under possiblity selection if user_pos returned as default then sample user_possibilites table
+  -create new table for This user one to many user_possibilities
+  -under possibility selection if user_pos returned as default then sample user_possibilities table
 
 SC display deleted options chance to put back in loop
-Sports Car display user stats for that possiblity on suggest
+SC display user stats for that possibility on suggest
 
 ?password?
+
+
+SC multiple time inputs, location dependencies.
