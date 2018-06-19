@@ -108,6 +108,9 @@ class Cli
     self.how_much_time?
   end
 
+  def where_are_you_at?
+    
+  end
 
 
 
