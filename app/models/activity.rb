@@ -22,16 +22,21 @@ class Activity < ActiveRecord::Base
 
     exclude_poss_ids = exclude_poss_array.map {|x| x.possibility_id}.uniq
 
-    poss_array = Possibility.all.map{|poss_object| poss_object if !exclude_poss_ids.include?(poss_object.id)}.compact
+    time_exclude = Possibility.all.select do |possibility|
+      possibility.duration_in_minutes == time || possibility.duration_in_minutes == nil
+    end
 
-    if poss_array.length == 1
+    poss_array = time_exclude.map{|poss_object| poss_object if !exclude_poss_ids.include?(poss_object.id)}.compact
+
+    if poss_array.length == 0
+      puts ""
       puts "We have no more possibilities for you."
+      puts ""
       exit
     end
 
-    poss_array.select do |possibility|
-      possibility.duration_in_minutes == time || possibility.duration_in_minutes == nil
-    end.sample
+    poss_array.sample
+
   end
 
 
