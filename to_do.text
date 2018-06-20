@@ -25,3 +25,13 @@ SC display user stats for that possibility on suggest
 SC multiple time inputs, location dependencies.
 
 ?password?
+
+
+there is an issue: --- we need to add the steps under new user to get to random possibility
+/Users/willley/Desktop/Class Work/Final_projects/mod_1/module-one-final-project-guidelines-dc-web-060418/app/models/cli.rb:165:in `suggest_possibility': undefined method `suggest_random_possibility' for nil:NilClass (NoMethodError)
+	from /Users/willley/Desktop/Class Work/Final_projects/mod_1/module-one-final-project-guidelines-dc-web-060418/app/models/cli.rb:158:in `how_much_time?'
+	from /Users/willley/Desktop/Class Work/Final_projects/mod_1/module-one-final-project-guidelines-dc-web-060418/app/models/cli.rb:124:in `where_are_you_at?'
+	from /Users/willley/Desktop/Class Work/Final_projects/mod_1/module-one-final-project-guidelines-dc-web-060418/app/models/cli.rb:110:in `create_new_user'
+	from /Users/willley/Desktop/Class Work/Final_projects/mod_1/module-one-final-project-guidelines-dc-web-060418/app/models/cli.rb:24:in `start'
+	from /Users/willley/Desktop/Class Work/Final_projects/mod_1/module-one-final-project-guidelines-dc-web-060418/app/models/cli.rb:8:in `call'
+	from bin/run.rb:2:in `<main>'

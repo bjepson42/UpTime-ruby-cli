@@ -106,7 +106,7 @@ class Cli
       puts ""
       puts "Okay, great! We'll just call you #{new_user_first_name}."
     end
-    User.create(first_name: new_user_first_name, last_name: new_user_last_name, nick_name: new_user_nickname)
+    self.user = User.create(first_name: new_user_first_name, last_name: new_user_last_name, nick_name: new_user_nickname)
     self.where_are_you_at?
   end
 
