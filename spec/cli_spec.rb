@@ -18,10 +18,11 @@ describe "Cli" do
   #   expect(greeting.name).to eq "Brian"
   # end
 
-
+#------this should check to see if a function calls self.quit if it receives "quit"
   it "exit should quit program" do
     allow(cli.where_are_you_at?).to receive(:gets).and_return("quit")
-    expect { cli.where_are_you_at? }.to output(/Thank you for using UPTIME!/).to_stdout
+    self.quit
+    #expect { cli.where_are_you_at? }.to output(/Thank you for using UPTIME!/).to_stdout
   end
 
 end

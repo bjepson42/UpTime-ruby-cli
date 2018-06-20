@@ -21,7 +21,7 @@ class Cli
     puts " 2. No"
     puts ""
     used_before = gets.strip
-    self.quit(used_before) #<-----fix all these so that they're condition before method
+    self.quit if used_before == "quit" 
     if used_before == "1"
       self.user_already_exists
     elsif used_before == "2"
@@ -38,7 +38,7 @@ class Cli
     puts "Please type your name (first and last)."
     puts ""
     user_name_response = gets.chomp
-    self.quit(user_name_response)
+    self.quit if user_name_response == "quit"
     user_name_array = user_name_response.split(" ")
     self.user = User.find_by(first_name: user_name_array[0], last_name: user_name_array[1])
     if self.user == nil
@@ -66,7 +66,7 @@ class Cli
       puts " 1. Yes. Perhaps I mispelled my name. I'll try again."
       puts " 2. No. I better tell you more about myself."
       double_check_used_before = gets.strip
-      self.quit(double_check_used_before)
+      self.quit if double_check_used_before == "quit"
       if double_check_used_before == "1"
         self.user_already_exists
       elsif double_check_used_before == "2"
@@ -84,14 +84,14 @@ class Cli
     puts ""
     puts "What is your name?"
     new_user_full_name = gets.strip
-    self.quit(new_user_full_name)
+    self.quit if new_user_full_name == "quit"
     puts ""
     puts "Is there something you'd like to be called, other than your first name?"
     puts ""
     puts " 1. Yes"
     puts " 2. No"
     nick_name = gets.strip
-    self.quit(nick_name)
+    self.quit if nick_name == "quit"
     if nick_name == "1"
       puts ""
       puts "What would you like us to call you? (In other words, what is your nickname?)"
@@ -121,7 +121,7 @@ class Cli
     puts ""
     puts "Please enter a number."
     user_response = gets.strip
-    self.quit(user_response)
+    self.quit if user_response == "quit"
     if user_response == "1"
       self.limit_place = "home"
     elsif user_response == "2"
@@ -148,7 +148,7 @@ class Cli
     puts "Please enter a number."
     puts ""
     user_time = gets.strip
-    self.quit(user_time)
+    self.quit if user_time == "quit"
     case user_time
       when "1"
         limit_time = 60
@@ -190,7 +190,7 @@ class Cli
     puts " 3. Reject this possibility, and never show it to me again!"
     puts ""
     self.accepted_or_rejected = gets.strip
-    self.quit(self.accepted_or_rejected)
+    self.quit if self.accepted_or_rejected == "quit"
     self.create_activity
   end
 
@@ -236,7 +236,7 @@ class Cli
         puts ""
         puts "Please enter a number."
         self.new_possibility_required_location = gets.strip
-        self.quit(self.new_possibility_required_location)
+        self.quit if self.new_possibility_required_location == "quit"
         create_new_possibility
 #---------------------------
       else
@@ -308,7 +308,7 @@ class Cli
     puts ""
     puts ""
     self.suggest_another = gets.strip
-    self.quit(self.suggest_another)
+    self.quit if self.suggest_another == "quit"
     self.continue?
   end
 #---------Get rating method should be pulled out from above and below methods and a helper method created for it
@@ -326,7 +326,7 @@ class Cli
       puts ""
       puts ""
       self.completed_activity = gets.strip
-      self.quit(self.completed_activity)
+      self.quit if self.completed_activity == "quit"
       if self.completed_activity == "1"
         self.activity.status = "accepted and completed"
         self.activity.save
@@ -348,7 +348,7 @@ class Cli
         puts ""
         puts ""
         self.suggest_another = gets.strip
-        self.quit(self.suggest_another)
+        self.quit if self.suggest_another == "quit"
         self.continue?
       elsif self.completed_activity == "2"
         self.activity.status = "accepted but not completed"
@@ -362,7 +362,7 @@ class Cli
         puts ""
         puts ""
         self.suggest_another = gets.strip
-        self.quit(self.suggest_another)
+        self.quit if self.suggest_another == "quit"
         self.continue?
       end
     end
@@ -387,7 +387,7 @@ class Cli
     puts ""
     puts "Rate this activity on a scale of 1 through 5."
     user_response = gets.strip
-    self.quit(user_response)
+    self.quit if user_response == "quit"
     if user_response == ""
       puts "We missed that."
       get_rating
@@ -396,14 +396,12 @@ class Cli
   end
 
 #-----quit text and exit function
-  def quit(user_input)
-    if user_input == "quit"
+  def quit
       puts ""
       puts "Thank you for using UPTIME!"
       puts "Have a fantastic day!"
       puts ""
       exit
-    end
   end
 
 #-----what was that text
