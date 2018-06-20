@@ -32,8 +32,6 @@ fixed: new user didn't get placed into cli.user
 new user confirmation on user's input
 account for all other inputs not values we want
 
-quit or exit option throughout
+#quit or exit option throughout
 menu to show stats
-make the new user create a 'what's your name' and split to make first and last name
-
-create_new_user and break up first and last name methods
+#make the new user create a 'what's your name' and split to make first and last name-done but locally calc.
