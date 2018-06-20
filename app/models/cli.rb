@@ -108,8 +108,8 @@ class Cli
       puts Rainbow("Okay, great! We'll just call you #{new_user_first_name}. Let's get started!").underline
     end
     self.user = User.create(first_name: new_user_first_name, last_name: new_user_last_name, nick_name: new_user_nickname)
-    self.user.where_are_you_at?
-    end
+    self.user.where_are_you_at
+  end
 
 #------user sets location constraint->moves to time constraint
 
