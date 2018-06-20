@@ -2,7 +2,7 @@ require 'pry'
 require 'rainbow'
 
 class Cli
-  attr_accessor :user, :possibility, :user_time, :accepted_or_rejected, :activity, :completed_activity, :suggest_another, :activity, :new_possibility_name, :new_possibility_description, :new_possibility_duration, :new_possibility_required_location, :new_possibility, :limit_place
+  attr_accessor :user, :possibility, :limit_time, :accepted_or_rejected, :activity, :completed_activity, :suggest_another, :activity, :new_possibility_name, :new_possibility_description, :new_possibility_duration, :new_possibility_required_location, :new_possibility, :limit_place
 
   def call
      self.start
@@ -135,8 +135,8 @@ class Cli
 
 
 #---user sets time constraint ->moves to gen. possibilities
+  #how much time do you have 1. 15min, 2. 30 min, 3. 60 minutes
   def how_much_time?
-    #how much time do you have 1. 15min, 2. 30 min, 3. 60 minutes
     puts ""
     puts "About how much time do you have?"
     puts ""
@@ -147,27 +147,23 @@ class Cli
     puts ""
     puts "Please enter a number."
     puts ""
-    self.user_time = gets.strip
-    self.quit(self.user_time)
-    
-    case self.user_time
-    when "1"
-      limit_time = 60
-    when "2"
-      limit_time = 30
-    when "3"
-      limit_time = 60
-    else
-      self.how_much_time?
+    user_time = gets.strip
+    self.quit(user_time)
+    case user_time
+      when "1"
+        limit_time = 60
+      when "2"
+        limit_time = 30
+      when "3"
+        limit_time = 60
+      else
+        self.how_much_time?
     end
-    self.suggest_possibility
+    self.suggest_possibility(limit_time)
   end
 
-#----generates possibilities  adds time constraint --> accept/reject
-  def suggest_possibility
-
-
-    #__________move block
+#----generates possibilities with time constraint and place constraint --> accept/reject
+  def suggest_possibility(limit_time)
     self.possibility = self.user.suggest_random_possibility(limit_time, self.limit_place)
     puts ""
     puts ""
@@ -203,6 +199,8 @@ class Cli
   def create_activity
     #------accepts activity
     if self.accepted_or_rejected == "1"
+
+#-----------move this section to possiblity creation method under possiblity see note: 1 in todo
       if self.possibility.name == "Create a New Possibility for the Future"
         puts ""
         puts ""
@@ -240,6 +238,7 @@ class Cli
         self.new_possibility_required_location = gets.strip
         self.quit(self.new_possibility_required_location)
         create_new_possibility
+#---------------------------
       else
       self.activity = Activity.create(status: "accepted", user_id: self.user.id, possibility_id: self.possibility.id)
       puts ""
@@ -268,7 +267,7 @@ class Cli
   end
 
   def create_new_possibility
-
+#---------code between creates new possibility
     self.new_possibility = Possibility.create(name: self.new_possibility_name, description: self.new_possibility_description)
 
     if new_possibility_duration == "1"
@@ -289,11 +288,10 @@ class Cli
       self.new_possibility.necessary_location = nil
     end
     self.new_possibility.save
+#-----------------------------------------------------
 
-    self.activity = Activity.create(status: "accepted", user_id: self.user.id,
+    self.activity = Activity.create(status: "accepted and completed", user_id: self.user.id,
       possibility_id: self.possibility.id)
-    self.activity.status = "accepted and completed"
-    self.activity.save
     puts ""
     puts ""
     puts "Awesome! You just created a new possibility for the future!"
@@ -312,10 +310,8 @@ class Cli
     self.suggest_another = gets.strip
     self.quit(self.suggest_another)
     self.continue?
-
-
   end
-
+#---------Get rating method should be pulled out from above and below methods and a helper method created for it
   def complete_activity
     if self.activity.status != "accepted and completed"
       puts ""
@@ -372,7 +368,7 @@ class Cli
     end
   end
 
-#------helper methods for CLI --------------------------------------
+#------helper methods for CLI ------------------------------------------------
 
 
   def continue?

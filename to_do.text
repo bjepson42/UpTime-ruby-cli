@@ -35,3 +35,6 @@ account for all other inputs not values we want
 #quit or exit option throughout
 menu to show stats
 #make the new user create a 'what's your name' and split to make first and last name-done but locally calc.
+
+
+1: add a created_by_user_id to Possibilities DB and add created_by_user_id to new possibilities possibility
