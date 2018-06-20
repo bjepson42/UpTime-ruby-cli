@@ -48,17 +48,20 @@ class Cli
       if self.user.nick_name
         puts ""
         puts ""
-        puts Rainbow("Hi, #{self.user.nick_name}! We've found you in our records.").underline
+        puts Rainbow("Hi, #{self.user.nick_name}! We've found you in our records.").underline.bright
         puts ""
         puts ""
       else
         puts ""
         puts ""
-        puts Rainbow("Hi, #{self.user.first_name}! We've found you in our records.").underline
+        puts Rainbow("Hi, #{self.user.first_name}! We've found you in our records.").underline.bright
         puts ""
         puts ""
       end
       puts "You're here, because you have a bit of downtime, and you want to turn it into UPTIME!"
+      puts ""
+      puts ""
+      Possibility.user_possibility_stats(self.user.id)
       puts ""
       puts ""
       self.where_are_you_at?
@@ -102,10 +105,10 @@ class Cli
       new_user_nickname = gets.chomp
       puts ""
       puts ""
-      puts Rainbow("Well hello, #{new_user_nickname}! Let's get started!").underline
+      puts Rainbow("Well hello, #{new_user_nickname}! Let's get started!").underline.bright
     elsif nick_name == "2"
       puts ""
-      puts Rainbow("Okay, great! We'll just call you #{new_user_full_name.split(" ")[0]}. Let's get started!").underline
+      puts Rainbow("Okay, great! We'll just call you #{new_user_full_name.split(" ")[0]}. Let's get started!").underline.bright
     end
     self.user = User.create(first_name: new_user_full_name.split(" ")[0], last_name: new_user_full_name.split(" ")[1], nick_name: new_user_nickname)
     self.where_are_you_at?
@@ -114,6 +117,9 @@ class Cli
 #------user sets location constraint->moves to time constraint
 
   def where_are_you_at?
+    puts "We are going to ask you a few basic questions, and suggest an activity for you based on your answers. This won't take long."
+    puts ""
+    puts ""
     puts "Where are you?"
     puts ""
     puts " 1. Home"
