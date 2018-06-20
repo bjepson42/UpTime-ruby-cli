@@ -165,8 +165,10 @@ class Cli
       self.possibility = self.user.suggest_random_possibility(15, self.limit_place)
       puts ""
       puts ""
-
       puts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline
+      puts ""
+      puts ""
+      self.possibility.possibility_stats(user.id)
       puts ""
       puts ""
       self.accept_or_reject
@@ -176,12 +178,20 @@ class Cli
       puts ""
       puts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline
       puts ""
+      puts ""
+      self.possibility.possibility_stats(user.id)
+      puts ""
+      puts ""
       self.accept_or_reject
     when "3"
       self.possibility = self.user.suggest_random_possibility(60, self.limit_place)
       puts ""
       puts ""
       puts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline
+      puts ""
+      puts ""
+      self.possibility.possibility_stats(user.id)
+      puts ""
       puts ""
       self.accept_or_reject
     else
@@ -251,6 +261,8 @@ class Cli
         create_new_possibility
       else
       self.activity = Activity.create(status: "accepted", user_id: self.user.id, possibility_id: self.possibility.id)
+      puts ""
+      puts ""
       self.complete_activity
       end
 
@@ -266,6 +278,7 @@ class Cli
         #--rejects and exclude
     elsif self.accepted_or_rejected == "3"
       self.activity = Activity.create(status: "rejected", user_id: self.user.id, possibility_id: self.possibility.id, exclude: true)
+      puts ""
       puts ""
       puts "Got it! I won't show that possiblity again."
       self.suggest_possibility
@@ -345,7 +358,12 @@ class Cli
         puts ""
         puts "Thanks for your rating!"
         puts ""
+        puts ""
+        self.activity.activity_stats
+        puts ""
+        puts ""
         puts "Would you like us to suggest a new possibility?"
+        puts ""
         puts ""
         puts "1. Yes, give me more."
         puts "2. No, I've had enough."

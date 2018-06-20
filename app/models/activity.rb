@@ -35,10 +35,7 @@ class Activity < ActiveRecord::Base
       location_time_exclude = Possibility.all.select do |possibility|
         possibility.duration_in_minutes == time && [nil, "not work"].include?(possibility.necessary_location) || possibility.duration_in_minutes == nil && [nil, "not work"].include?(possibility.necessary_location)
       end
-
-
     end
-
 
     poss_array = location_time_exclude.map{|poss_object| poss_object if !exclude_poss_ids.include?(poss_object.id)}.compact
 
@@ -46,11 +43,17 @@ class Activity < ActiveRecord::Base
       puts "We have no more possibilities for you."
       exit
     end
-
     poss_array.sample
-
   end
 
+  def activity_stats
+    average = Activity.where(possibility_id: self.possibility_id, user_id: self.user_id).average("rating")
+
+    if average!= nil
+      puts "Your average rating for this activity, on a scale of 1-5, is: " + Rainbow("#{average}").bright
+    end
+
+  end
 
 
 
