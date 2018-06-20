@@ -7,7 +7,7 @@ class Cli
   def call
      self.start
   end
-#---get user object associated with current users
+#---welcome and have you used on comp. before
   def start
     puts ""
     puts ""
@@ -21,7 +21,7 @@ class Cli
     puts " 2. No"
     puts ""
     used_before = gets.strip
-    self.quit(used_before)
+    self.quit(used_before) #<-----fix all these so that they're condition before method
     if used_before == "1"
       self.user_already_exists
     elsif used_before == "2"
@@ -45,19 +45,15 @@ class Cli
       self.user = User.find_by(nick_name: user_name_array[0], last_name: user_name_array[1])
     end
     if self.user
+      puts ""
+      puts ""
       if self.user.nick_name
-        puts ""
-        puts ""
         puts Rainbow("Hi, #{self.user.nick_name}! We've found you in our records.").underline
-        puts ""
-        puts ""
       else
-        puts ""
-        puts ""
         puts Rainbow("Hi, #{self.user.first_name}! We've found you in our records.").underline
-        puts ""
-        puts ""
       end
+      puts ""
+      puts ""
       puts "You're here, because you have a bit of downtime, and you want to turn it into UPTIME!"
       puts ""
       puts ""
@@ -81,7 +77,7 @@ class Cli
       end
     end
   end
-
+#----------------should all be in user below
   def create_new_user
     puts ""
     puts "Tell us a little about yourself. It will only take a moment."
@@ -110,6 +106,9 @@ class Cli
     self.user = User.create(first_name: new_user_full_name.split(" ")[0], last_name: new_user_full_name.split(" ")[1], nick_name: new_user_nickname)
     self.where_are_you_at?
   end
+#-------------------above to user
+
+
 
 #------user sets location constraint->moves to time constraint
 
@@ -125,19 +124,14 @@ class Cli
     self.quit(user_response)
     if user_response == "1"
       self.limit_place = "home"
-      self.how_much_time?
     elsif user_response == "2"
       self.limit_place = "work"
-      self.how_much_time?
     elsif user_response == "3"
       self.limit_place = "not work or home"
-      self.how_much_time?
     end
+    self.how_much_time?
     puts ""
   end
-
-
-
 
 
 #---user sets time constraint ->moves to gen. possibilities
@@ -155,48 +149,35 @@ class Cli
     puts ""
     self.user_time = gets.strip
     self.quit(self.user_time)
-    self.suggest_possibility
-  end
-
-#----generates possibilities and accept/reject from user
-  def suggest_possibility
+    
     case self.user_time
     when "1"
-      self.possibility = self.user.suggest_random_possibility(15, self.limit_place)
-      puts ""
-      puts ""
-      puts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline
-      puts ""
-      puts ""
-      self.possibility.possibility_stats(user.id)
-      puts ""
-      puts ""
-      self.accept_or_reject
+      limit_time = 60
     when "2"
-      self.possibility =  self.user.suggest_random_possibility(30, self.limit_place)
-      puts ""
-      puts ""
-      puts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline
-      puts ""
-      puts ""
-      self.possibility.possibility_stats(user.id)
-      puts ""
-      puts ""
-      self.accept_or_reject
+      limit_time = 30
     when "3"
-      self.possibility = self.user.suggest_random_possibility(60, self.limit_place)
-      puts ""
-      puts ""
-      puts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline
-      puts ""
-      puts ""
-      self.possibility.possibility_stats(user.id)
-      puts ""
-      puts ""
-      self.accept_or_reject
+      limit_time = 60
     else
       self.how_much_time?
     end
+    self.suggest_possibility
+  end
+
+#----generates possibilities  adds time constraint --> accept/reject
+  def suggest_possibility
+
+
+    #__________move block
+    self.possibility = self.user.suggest_random_possibility(limit_time, self.limit_place)
+    puts ""
+    puts ""
+    puts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline
+    puts ""
+    puts ""
+    self.possibility.possibility_stats(user.id)
+    puts ""
+    puts ""
+    self.accept_or_reject
   end
 
 
@@ -309,7 +290,8 @@ class Cli
     end
     self.new_possibility.save
 
-    self.activity = Activity.create(status: "accepted", user_id: self.user.id, possibility_id: self.possibility.id)
+    self.activity = Activity.create(status: "accepted", user_id: self.user.id,
+      possibility_id: self.possibility.id)
     self.activity.status = "accepted and completed"
     self.activity.save
     puts ""
