@@ -108,16 +108,16 @@ class Cli
       puts Rainbow("Okay, great! We'll just call you #{new_user_first_name}. Let's get started!").underline
     end
     self.user = User.create(first_name: new_user_first_name, last_name: new_user_last_name, nick_name: new_user_nickname)
-    self.where_are_you_at
+    self.user.where_are_you_at
     end
 
 #------user sets location constraint->moves to time constraint
 
   def where_are_you_at?
-    puts "Where are you at?"
-    puts "1. home?"
-    puts "2. work?"
-    puts "3. somewhere else?"
+    puts "Where are you?"
+    puts "1. Home"
+    puts "2. Work"
+    puts "3. Somewhere else"
     puts "Please enter a number."
     user_response = gets.strip
     if user_response == "1"
