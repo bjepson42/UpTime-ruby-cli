@@ -183,6 +183,9 @@ class Cli
       self.limit_place = "work"
     elsif user_response == "3"
       self.limit_place = "not work or home"
+    else
+      self.what_was_that?
+      self.where_are_you_at?
     end
     self.how_much_time?
     puts ""
@@ -201,9 +204,9 @@ class Cli
     puts ""
     puts "About how much time do you have?"
     puts ""
-    puts " 1. 15 minutes - 30 minutes"
-    puts " 2. 15 minutes - 30 minutes"
-    puts " 3. More than 30 minutes"
+    puts " 1. Less than 15 minutes."
+    puts " 2. 15 minutes - 30 minutes."
+    puts " 3. More than 30 minutes."
     puts ""
     puts ""
     puts "Please enter a number."
@@ -212,19 +215,25 @@ class Cli
     self.quit if user_time == "quit"
     case user_time
       when "1"
-        limit_time = 15
+        self.limit_time = 15
       when "2"
-        limit_time = 30
+        self.limit_time = 30
       when "3"
-        limit_time = 60
+        self.limit_time = 60
       else
+        self.what_was_that?
         self.how_much_time?
     end
-    self.suggest_possibility(limit_time)
+    self.suggest_possibility(self.limit_time)
   end
 
 #----generates possibilities with time constraint and place constraint --> accept/reject
   def suggest_possibility(limit_time)
+    puts ""
+    puts Rainbow("*").blue * 70
+    puts ""
+    puts ""
+    puts ""
     self.possibility = self.user.suggest_random_possibility(limit_time, self.limit_place)
     puts ""
     puts ""
@@ -244,7 +253,7 @@ class Cli
     puts "Would you like to accept or reject this possibility?" + Rainbow(" (#{self.possibility.name})").bright
     puts ""
     puts ""
-    puts " 1. Accept this possibility"
+    puts " 1. Accept this possibility."
     puts " 2. Reject this possibility for now. Suggest another."
     puts " 3. Reject this possibility, and never show it to me again!"
     puts ""
@@ -252,6 +261,10 @@ class Cli
     puts ""
     self.accepted_or_rejected = gets.strip
     self.quit if self.accepted_or_rejected == "quit"
+    if ["1", "2", "3"].all? { |i| self.accepted_or_rejected != i}
+      self.what_was_that?
+      self.accept_or_reject
+    end
     self.create_activity
   end
 
@@ -340,7 +353,7 @@ class Cli
       puts "Suggesting another possibility..."
       puts ""
       puts ""
-      self.suggest_possibility
+      self.suggest_possibility(self.limit_time)
         #--rejects and exclude
     elsif self.accepted_or_rejected == "3"
       self.activity = Activity.create(status: "rejected", user_id: self.user.id, possibility_id: self.possibility.id, exclude: true)
@@ -352,7 +365,7 @@ class Cli
       puts ""
       puts ""
       puts "Got it! I won't show that possiblity again."
-      self.suggest_possibility
+      self.suggest_possibility(self.limit_time)
     end
 
   end
@@ -405,6 +418,10 @@ class Cli
     puts ""
     self.suggest_another = gets.strip
     self.quit if self.suggest_another == "quit"
+    if ["1", "2"].all? { |i| self.suggest_another != i}
+      self.what_was_that?
+      self.create_new_possibility
+    end
     self.continue?
   end
 #---------Get rating method should be pulled out from above and below methods and a helper method created for it
@@ -428,6 +445,10 @@ class Cli
       puts ""
       self.completed_activity = gets.strip
       self.quit if self.completed_activity == "quit"
+      if ["1", "2"].all? { |i| self.completed_activity != i}
+        self.what_was_that?
+        self.complete_activity
+      end
       if self.completed_activity == "1"
         self.activity.status = "accepted and completed"
         self.activity.save
@@ -485,7 +506,7 @@ class Cli
 
   def continue?
     if self.suggest_another == "1"
-      self.suggest_possibility
+      self.suggest_possibility(self.limit_time)
     elsif self.suggest_another == "2"
       exit
     end
@@ -513,9 +534,9 @@ class Cli
     puts ""
     user_response = gets.strip
     self.quit if user_response == "quit"
-    if user_response == ""
-      puts "We missed that."
-      get_rating
+    if ["1", "2", "3", "4", "5"].all? { |i| self.suggest_another != i}
+      self.what_was_that?
+      self.get_rating
     end
     self.activity.rate(user_response)
   end
@@ -539,8 +560,11 @@ class Cli
 #-----what was that text
 
   def what_was_that?
-    puts "I didn't catch that."
-    puts "Would you please try a different answer."
+    puts "-" * 70
+    puts "*****  I didn't catch that  *****"
+    puts ""
+    puts "Would you please try a different answer?"
+    puts "-" * 70
   end
 
 
