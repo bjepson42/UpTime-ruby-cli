@@ -495,8 +495,14 @@ class Cli
 #-----what was that text
 
   def what_was_that?
+    puts ""
+    puts ""
     puts "I didn't catch that."
-    puts "Would you please try a different answer."
+    puts ""
+    puts ""
+    puts "Would you please try a different answer?"
+    puts ""
+    puts ""
   end
 
 
