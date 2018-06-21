@@ -2,12 +2,12 @@ require 'pry'
 require 'rainbow'
 
 class Cli
-  attr_accessor :user, :possibility, :user_time, :accepted_or_rejected, :activity, :completed_activity, :suggest_another, :activity, :new_possibility_name, :new_possibility_description, :new_possibility_duration, :new_possibility_required_location, :new_possibility, :limit_place
+  attr_accessor :user, :possibility, :limit_time, :accepted_or_rejected, :activity, :completed_activity, :suggest_another, :activity, :new_possibility_name, :new_possibility_description, :new_possibility_duration, :new_possibility_required_location, :new_possibility, :limit_place
 
   def call
      self.start
   end
-#---get user object associated with current users
+#---welcome and have you used on comp. before
   def start
     puts ""
     puts Rainbow("*").blue * 70
@@ -25,7 +25,7 @@ class Cli
     puts " 2. No"
     puts ""
     used_before = gets.strip
-    self.quit(used_before)
+    self.quit if used_before == "quit"
     if used_before == "1"
       self.user_already_exists
     elsif used_before == "2"
@@ -48,7 +48,7 @@ class Cli
     puts "Please type your name (first and last)."
     puts ""
     user_name_response = gets.chomp
-    self.quit(user_name_response)
+    self.quit if user_name_response == "quit"
     user_name_array = user_name_response.split(" ")
 
     self.user = User.where("LOWER(first_name) = ? AND LOWER(last_name) = ?", "#{user_name_array[0]}".downcase, "#{user_name_array[1]}".downcase).first
@@ -57,29 +57,15 @@ class Cli
       self.user = User.where("LOWER(nick_name) = ? AND LOWER(last_name) = ?", "#{user_name_array[0]}".downcase, "#{user_name_array[1]}".downcase).first
     end
     if self.user
+      puts ""
+      puts ""
       if self.user.nick_name
-        puts ""
-        puts Rainbow("*").blue * 70
-        puts ""
-        puts ""
-        puts ""
-        puts ""
-        puts ""
-        puts Rainbow("Hi, #{self.user.nick_name}! We've found you in our records.").underline.bright
-        puts ""
-        puts ""
+        puts Rainbow("Hi, #{self.user.nick_name}! We've found you in our records.").underline
       else
-        puts ""
-        puts Rainbow("*").blue * 70
-        puts ""
-        puts ""
-        puts ""
-        puts ""
-        puts ""
-        puts Rainbow("Hi, #{self.user.first_name}! We've found you in our records.").underline.bright
-        puts ""
-        puts ""
+        puts Rainbow("Hi, #{self.user.first_name}! We've found you in our records.").underline
       end
+      puts ""
+      puts ""
       puts "You're here, because you have a bit of downtime, and you want to turn it into UPTIME!"
       puts ""
       puts ""
@@ -100,7 +86,7 @@ class Cli
       puts " 1. Yes. Perhaps I mispelled my name. I'll try again."
       puts " 2. No. I better tell you more about myself."
       double_check_used_before = gets.strip
-      self.quit(double_check_used_before)
+      self.quit if double_check_used_before == "quit"
       if double_check_used_before == "1"
         self.user_already_exists
       elsif double_check_used_before == "2"
@@ -111,7 +97,7 @@ class Cli
       end
     end
   end
-
+#----------------should all be in user below
   def create_new_user
     puts ""
     puts Rainbow("*").blue * 70
@@ -124,7 +110,7 @@ class Cli
     puts ""
     puts "What is your name?"
     new_user_full_name = gets.strip
-    self.quit(new_user_full_name)
+    self.quit if new_user_full_name == "quit"
     puts ""
     puts Rainbow("*").blue * 70
     puts ""
@@ -137,7 +123,7 @@ class Cli
     puts " 1. Yes"
     puts " 2. No"
     nick_name = gets.strip
-    self.quit(nick_name)
+    self.quit if nick_name == "quit"
     if nick_name == "1"
       puts ""
       puts Rainbow("*").blue * 70
@@ -164,6 +150,9 @@ class Cli
     self.user = User.create(first_name: new_user_full_name.split(" ")[0], last_name: new_user_full_name.split(" ")[1], nick_name: new_user_nickname)
     self.where_are_you_at?
   end
+#-------------------above to user
+
+
 
 #------user sets location constraint->moves to time constraint
 
@@ -187,27 +176,22 @@ class Cli
     puts "Please enter a number."
     puts ""
     user_response = gets.strip
-    self.quit(user_response)
+    self.quit if user_response == "quit"
     if user_response == "1"
       self.limit_place = "home"
-      self.how_much_time?
     elsif user_response == "2"
       self.limit_place = "work"
-      self.how_much_time?
     elsif user_response == "3"
       self.limit_place = "not work or home"
-      self.how_much_time?
     end
+    self.how_much_time?
     puts ""
   end
 
 
-
-
-
 #---user sets time constraint ->moves to gen. possibilities
+  #how much time do you have 1. 15min, 2. 30 min, 3. 60 minutes
   def how_much_time?
-    #how much time do you have 1. 15min, 2. 30 min, 3. 60 minutes
     puts ""
     puts Rainbow("*").blue * 70
     puts ""
@@ -224,59 +208,33 @@ class Cli
     puts ""
     puts "Please enter a number."
     puts ""
-    self.user_time = gets.strip
-    self.quit(self.user_time)
-    self.suggest_possibility
+    user_time = gets.strip
+    self.quit if user_time == "quit"
+    case user_time
+      when "1"
+        limit_time = 15
+      when "2"
+        limit_time = 30
+      when "3"
+        limit_time = 60
+      else
+        self.how_much_time?
+    end
+    self.suggest_possibility(limit_time)
   end
 
-#----generates possibilities and accept/reject from user
-  def suggest_possibility
-    case self.user_time
-    when "1"
-      self.possibility = self.user.suggest_random_possibility(15, self.limit_place)
-      puts ""
-      puts Rainbow("*").blue.bright * 70
-      puts ""
-      puts ""
-      puts ""
-      puts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline
-      puts ""
-      puts ""
-      self.possibility.possibility_stats(user.id)
-      puts ""
-      puts ""
-      self.accept_or_reject
-    when "2"
-      self.possibility =  self.user.suggest_random_possibility(30, self.limit_place)
-      puts ""
-      puts Rainbow("*").blue.bright * 70
-      puts ""
-      puts ""
-      puts ""
-      puts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline
-      puts ""
-      puts ""
-      self.possibility.possibility_stats(user.id)
-      puts ""
-      puts ""
-      self.accept_or_reject
-    when "3"
-      self.possibility = self.user.suggest_random_possibility(60, self.limit_place)
-      puts ""
-      puts Rainbow("*").blue.bright * 70
-      puts ""
-      puts ""
-      puts ""
-      puts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline
-      puts ""
-      puts ""
-      self.possibility.possibility_stats(user.id)
-      puts ""
-      puts ""
-      self.accept_or_reject
-    else
-      self.how_much_time?
-    end
+#----generates possibilities with time constraint and place constraint --> accept/reject
+  def suggest_possibility(limit_time)
+    self.possibility = self.user.suggest_random_possibility(limit_time, self.limit_place)
+    puts ""
+    puts ""
+    puts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline
+    puts ""
+    puts ""
+    self.possibility.possibility_stats(user.id)
+    puts ""
+    puts ""
+    self.accept_or_reject
   end
 
 
@@ -293,7 +251,7 @@ class Cli
     puts ""
     puts ""
     self.accepted_or_rejected = gets.strip
-    self.quit(self.accepted_or_rejected)
+    self.quit if self.accepted_or_rejected == "quit"
     self.create_activity
   end
 
@@ -302,6 +260,8 @@ class Cli
   def create_activity
     #------accepts activity
     if self.accepted_or_rejected == "1"
+
+#-----------move this section to possiblity creation method under possiblity see note: 1 in todo
       if self.possibility.name == "Create a New Possibility for the Future"
         puts ""
         puts Rainbow("*").blue * 70
@@ -362,8 +322,9 @@ class Cli
         puts ""
         puts "Please enter a number."
         self.new_possibility_required_location = gets.strip
-        self.quit(self.new_possibility_required_location)
+        self.quit if self.new_possibility_required_location == "quit"
         create_new_possibility
+#---------------------------
       else
       self.activity = Activity.create(status: "accepted", user_id: self.user.id, possibility_id: self.possibility.id)
       puts ""
@@ -397,7 +358,7 @@ class Cli
   end
 
   def create_new_possibility
-
+#---------code between creates new possibility
     self.new_possibility = Possibility.create(name: self.new_possibility_name, description: self.new_possibility_description)
 
     if new_possibility_duration == "1"
@@ -418,10 +379,10 @@ class Cli
       self.new_possibility.necessary_location = nil
     end
     self.new_possibility.save
+#-----------------------------------------------------
 
-    self.activity = Activity.create(status: "accepted", user_id: self.user.id, possibility_id: self.possibility.id)
-    self.activity.status = "accepted and completed"
-    self.activity.save
+    self.activity = Activity.create(status: "accepted and completed", user_id: self.user.id,
+      possibility_id: self.possibility.id)
     puts ""
     puts Rainbow("*").blue * 70
     puts ""
@@ -443,12 +404,10 @@ class Cli
     puts ""
     puts ""
     self.suggest_another = gets.strip
-    self.quit(self.suggest_another)
+    self.quit if self.suggest_another == "quit"
     self.continue?
-
-
   end
-
+#---------Get rating method should be pulled out from above and below methods and a helper method created for it
   def complete_activity
     if self.activity.status != "accepted and completed"
       puts ""
@@ -468,7 +427,7 @@ class Cli
       puts ""
       puts ""
       self.completed_activity = gets.strip
-      self.quit(self.completed_activity)
+      self.quit if self.completed_activity == "quit"
       if self.completed_activity == "1"
         self.activity.status = "accepted and completed"
         self.activity.save
@@ -496,7 +455,7 @@ class Cli
         puts ""
         puts ""
         self.suggest_another = gets.strip
-        self.quit(self.suggest_another)
+        self.quit if self.suggest_another == "quit"
         self.continue?
       elsif self.completed_activity == "2"
         self.activity.status = "accepted but not completed"
@@ -515,13 +474,13 @@ class Cli
         puts ""
         puts ""
         self.suggest_another = gets.strip
-        self.quit(self.suggest_another)
+        self.quit if self.suggest_another == "quit"
         self.continue?
       end
     end
   end
 
-#------helper methods for CLI --------------------------------------
+#------helper methods for CLI ------------------------------------------------
 
 
   def continue?
@@ -553,7 +512,7 @@ class Cli
     puts "Rate this activity on a scale of 1 through 5."
     puts ""
     user_response = gets.strip
-    self.quit(user_response)
+    self.quit if user_response == "quit"
     if user_response == ""
       puts "We missed that."
       get_rating
@@ -562,8 +521,7 @@ class Cli
   end
 
 #-----quit text and exit function
-  def quit(user_input)
-    if user_input == "quit"
+  def quit
       puts ""
       puts puts ""
       puts Rainbow("*").blue * 70
@@ -576,7 +534,6 @@ class Cli
       puts ""
       puts ""
       exit
-    end
   end
 
 #-----what was that text
