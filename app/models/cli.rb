@@ -47,69 +47,10 @@ class Cli
     puts ""
     puts "Please type your name (first and last)."
     puts ""
-    user_name_response = gets.chomp
+    user_name_response = gets.chomp.split.map(&:capitalize).join(' ')
     self.quit(user_name_response)
-    user_name_array = user_name_response.split(" ")
-
-    self.user = User.where("LOWER(first_name) = ? AND LOWER(last_name) = ?", "#{user_name_array[0]}".downcase, "#{user_name_array[1]}".downcase).first
-
-    if self.user == nil
-      self.user = User.where("LOWER(nick_name) = ? AND LOWER(last_name) = ?", "#{user_name_array[0]}".downcase, "#{user_name_array[1]}".downcase).first
-    end
-    if self.user
-      if self.user.nick_name
-        puts ""
-        puts Rainbow("*").blue * 70
-        puts ""
-        puts ""
-        puts ""
-        puts ""
-        puts ""
-        puts Rainbow("Hi, #{self.user.nick_name}! We've found you in our records.").underline.bright
-        puts ""
-        puts ""
-      else
-        puts ""
-        puts Rainbow("*").blue * 70
-        puts ""
-        puts ""
-        puts ""
-        puts ""
-        puts ""
-        puts Rainbow("Hi, #{self.user.first_name}! We've found you in our records.").underline.bright
-        puts ""
-        puts ""
-      end
-      puts "You're here, because you have a bit of downtime, and you want to turn it into UPTIME!"
-      puts ""
-      puts ""
-      Possibility.user_possibility_stats(self.user.id)
-      puts ""
-      puts ""
-      self.where_are_you_at?
-    else
-      puts ""
-      puts Rainbow("*").blue * 70
-      puts ""
-      puts ""
-      puts ""
-      puts ""
-      puts ""
-      puts "We could not find you in our records. Are you sure you've used UPTIME on this computer before?"
-      puts ""
-      puts " 1. Yes. Perhaps I mispelled my name. I'll try again."
-      puts " 2. No. I better tell you more about myself."
-      double_check_used_before = gets.strip
-      self.quit(double_check_used_before)
-      if double_check_used_before == "1"
-        self.user_already_exists
-      elsif double_check_used_before == "2"
-        self.create_new_user
-      else
-        self.what_was_that?
-        self.user_already_exists
-      end
-    end
+    User.name_search_and_greeting(user_name_response, self)
+    self.where_are_you_at?
   end
 
   def create_new_user
@@ -123,7 +64,8 @@ class Cli
     puts "Tell us a little about yourself. It will only take a moment."
     puts ""
     puts "What is your name?"
-    new_user_full_name = gets.strip
+    puts ""
+    new_user_full_name = gets.strip.split.map(&:capitalize).join(' ')
     self.quit(new_user_full_name)
     puts ""
     puts Rainbow("*").blue * 70
@@ -136,7 +78,8 @@ class Cli
     puts ""
     puts " 1. Yes"
     puts " 2. No"
-    nick_name = gets.strip
+    puts ""
+    nick_name = gets.strip.split.map(&:capitalize).join(' ')
     self.quit(nick_name)
     if nick_name == "1"
       puts ""
@@ -147,21 +90,15 @@ class Cli
       puts ""
       puts ""
       puts "What would you like us to call you? (In other words, what is your nickname?)"
-      new_user_nickname = gets.chomp
+      new_user_nickname = gets.chomp.split.map(&:capitalize).join(' ')
+      User.name_search_and_greeting_new(new_user_full_name, new_user_nick_name, self)
       puts ""
       puts ""
       puts Rainbow("Well hello, #{new_user_nickname}! Let's get started!").underline.bright
     elsif nick_name == "2"
-      puts ""
-      puts Rainbow("*").blue * 70
-      puts ""
-      puts ""
-      puts ""
-      puts ""
-      puts ""
-      puts Rainbow("Okay, great! We'll just call you #{new_user_full_name.split(" ")[0]}. Let's get started!").underline.bright
+      User.name_search_and_greeting_new(new_user_full_name, nil, self)
+      user_name_array = new_user_full_name.split(" ")
     end
-    self.user = User.create(first_name: new_user_full_name.split(" ")[0], last_name: new_user_full_name.split(" ")[1], nick_name: new_user_nickname)
     self.where_are_you_at?
   end
 
@@ -190,14 +127,12 @@ class Cli
     self.quit(user_response)
     if user_response == "1"
       self.limit_place = "home"
-      self.how_much_time?
     elsif user_response == "2"
       self.limit_place = "work"
-      self.how_much_time?
     elsif user_response == "3"
       self.limit_place = "not work or home"
-      self.how_much_time?
     end
+    self.how_much_time?
     puts ""
   end
 
@@ -234,49 +169,27 @@ class Cli
     case self.user_time
     when "1"
       self.possibility = self.user.suggest_random_possibility(15, self.limit_place)
-      puts ""
-      puts Rainbow("*").blue.bright * 70
-      puts ""
-      puts ""
-      puts ""
-      puts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline
-      puts ""
-      puts ""
-      self.possibility.possibility_stats(user.id)
-      puts ""
-      puts ""
-      self.accept_or_reject
     when "2"
       self.possibility =  self.user.suggest_random_possibility(30, self.limit_place)
-      puts ""
-      puts Rainbow("*").blue.bright * 70
-      puts ""
-      puts ""
-      puts ""
-      puts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline
-      puts ""
-      puts ""
-      self.possibility.possibility_stats(user.id)
-      puts ""
-      puts ""
-      self.accept_or_reject
     when "3"
       self.possibility = self.user.suggest_random_possibility(60, self.limit_place)
-      puts ""
-      puts Rainbow("*").blue.bright * 70
-      puts ""
-      puts ""
-      puts ""
-      puts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline
-      puts ""
-      puts ""
-      self.possibility.possibility_stats(user.id)
-      puts ""
-      puts ""
-      self.accept_or_reject
     else
       self.how_much_time?
     end
+    puts ""
+    puts Rainbow("*").blue.bright * 70
+    puts ""
+    puts ""
+    puts ""
+    puts ""
+    puts ""
+    puts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline
+    puts ""
+    puts ""
+    self.possibility.possibility_stats(user.id)
+    puts ""
+    puts ""
+    self.accept_or_reject
   end
 
 
