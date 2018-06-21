@@ -4,6 +4,7 @@ class CreatePossibilities < ActiveRecord::Migration[4.2]
     create_table :possibilities do |t|
       t.string :name
       t.string :description
+      t.string :past_tense
       t.integer :physical_intensity #1-5
       t.integer :mental_intensity #1-5
       t.integer :fun_index #1-5
