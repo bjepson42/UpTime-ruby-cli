@@ -224,17 +224,17 @@ class Cli
         self.what_was_that?
         self.how_much_time?
     end
-    self.suggest_possibility(self.limit_time)
+    self.suggest_possibility
   end
 
 #----generates possibilities with time constraint and place constraint --> accept/reject
-  def suggest_possibility(limit_time)
+  def suggest_possibility
     puts ""
     puts Rainbow("*").blue * 70
     puts ""
     puts ""
     puts ""
-    self.possibility = self.user.suggest_random_possibility(limit_time, self.limit_place)
+    self.possibility = self.user.suggest_random_possibility(self.limit_time, self.limit_place)
     puts ""
     puts ""
     puts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline
@@ -353,7 +353,7 @@ class Cli
       puts "Suggesting another possibility..."
       puts ""
       puts ""
-      self.suggest_possibility(self.limit_time)
+      self.suggest_possibility
         #--rejects and exclude
     elsif self.accepted_or_rejected == "3"
       self.activity = Activity.create(status: "rejected", user_id: self.user.id, possibility_id: self.possibility.id, exclude: true)
@@ -365,7 +365,7 @@ class Cli
       puts ""
       puts ""
       puts "Got it! I won't show that possiblity again."
-      self.suggest_possibility(self.limit_time)
+      self.suggest_possibility
     end
 
   end
@@ -506,7 +506,7 @@ class Cli
 
   def continue?
     if self.suggest_another == "1"
-      self.suggest_possibility(self.limit_time)
+      self.suggest_possibility
     elsif self.suggest_another == "2"
       exit
     end
@@ -544,7 +544,7 @@ class Cli
 #-----quit text and exit function
   def quit
       puts ""
-      puts puts ""
+      puts ""
       puts Rainbow("*").blue * 70
       puts ""
       puts ""
