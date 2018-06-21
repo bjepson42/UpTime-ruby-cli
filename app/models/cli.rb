@@ -176,29 +176,14 @@ class Cli
     self.suggest_possibility
   end
 
-<<<<<<< HEAD
-#----generates possibilities with time constraint and place constraint --> accept/reject
-=======
 #----generates possibilities and accept/reject from user
->>>>>>> 4b4f906169c4a6535109baf3f1dbe05ce4057016
   def suggest_possibility
     puts ""
     puts Rainbow("*").blue * 70
     puts ""
     puts ""
     puts ""
-<<<<<<< HEAD
     self.possibility = self.user.suggest_random_possibility(self.limit_time, self.limit_place)
-=======
-    case self.user_time
-    when "1"
-      self.possibility = self.user.suggest_random_possibility(15, self.limit_place)
-    when "2"
-      self.possibility =  self.user.suggest_random_possibility(30, self.limit_place)
-    when "3"
-      self.possibility = self.user.suggest_random_possibility(60, self.limit_place)
-    end
->>>>>>> 4b4f906169c4a6535109baf3f1dbe05ce4057016
     puts ""
     puts ""
     puts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline
