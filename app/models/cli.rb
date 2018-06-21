@@ -47,55 +47,10 @@ class Cli
     puts ""
     puts "Please type your name (first and last)."
     puts ""
-    user_name_response = gets.chomp
+    user_name_response = gets.chomp.split.map(&:capitalize).join(' ')
     self.quit if user_name_response == "quit"
-    user_name_array = user_name_response.split(" ")
-
-    self.user = User.where("LOWER(first_name) = ? AND LOWER(last_name) = ?", "#{user_name_array[0]}".downcase, "#{user_name_array[1]}".downcase).first
-
-    if self.user == nil
-      self.user = User.where("LOWER(nick_name) = ? AND LOWER(last_name) = ?", "#{user_name_array[0]}".downcase, "#{user_name_array[1]}".downcase).first
-    end
-    if self.user
-      puts ""
-      puts ""
-      if self.user.nick_name
-        puts Rainbow("Hi, #{self.user.nick_name}! We've found you in our records.").underline
-      else
-        puts Rainbow("Hi, #{self.user.first_name}! We've found you in our records.").underline
-      end
-      puts ""
-      puts ""
-      puts "You're here, because you have a bit of downtime, and you want to turn it into UPTIME!"
-      puts ""
-      puts ""
-      Possibility.user_possibility_stats(self.user.id)
-      puts ""
-      puts ""
-      self.where_are_you_at?
-    else
-      puts ""
-      puts Rainbow("*").blue * 70
-      puts ""
-      puts ""
-      puts ""
-      puts ""
-      puts ""
-      puts "We could not find you in our records. Are you sure you've used UPTIME on this computer before?"
-      puts ""
-      puts " 1. Yes. Perhaps I mispelled my name. I'll try again."
-      puts " 2. No. I better tell you more about myself."
-      double_check_used_before = gets.strip
-      self.quit if double_check_used_before == "quit"
-      if double_check_used_before == "1"
-        self.user_already_exists
-      elsif double_check_used_before == "2"
-        self.create_new_user
-      else
-        self.what_was_that?
-        self.user_already_exists
-      end
-    end
+    User.name_search_and_greeting(user_name_response, self)
+    self.where_are_you_at?
   end
 #----------------should all be in user below
   def create_new_user
@@ -133,21 +88,15 @@ class Cli
       puts ""
       puts ""
       puts "What would you like us to call you? (In other words, what is your nickname?)"
-      new_user_nickname = gets.chomp
+      new_user_nickname = gets.chomp.split.map(&:capitalize).join(' ')
+      User.name_search_and_greeting_new(new_user_full_name, new_user_nick_name, self)
       puts ""
       puts ""
       puts Rainbow("Well hello, #{new_user_nickname}! Let's get started!").underline.bright
     elsif nick_name == "2"
-      puts ""
-      puts Rainbow("*").blue * 70
-      puts ""
-      puts ""
-      puts ""
-      puts ""
-      puts ""
-      puts Rainbow("Okay, great! We'll just call you #{new_user_full_name.split(" ")[0]}. Let's get started!").underline.bright
+      User.name_search_and_greeting_new(new_user_full_name, nil, self)
+      user_name_array = new_user_full_name.split(" ")
     end
-    self.user = User.create(first_name: new_user_full_name.split(" ")[0], last_name: new_user_full_name.split(" ")[1], nick_name: new_user_nickname)
     self.where_are_you_at?
   end
 #-------------------above to user
@@ -227,14 +176,29 @@ class Cli
     self.suggest_possibility
   end
 
+<<<<<<< HEAD
 #----generates possibilities with time constraint and place constraint --> accept/reject
+=======
+#----generates possibilities and accept/reject from user
+>>>>>>> 4b4f906169c4a6535109baf3f1dbe05ce4057016
   def suggest_possibility
     puts ""
     puts Rainbow("*").blue * 70
     puts ""
     puts ""
     puts ""
+<<<<<<< HEAD
     self.possibility = self.user.suggest_random_possibility(self.limit_time, self.limit_place)
+=======
+    case self.user_time
+    when "1"
+      self.possibility = self.user.suggest_random_possibility(15, self.limit_place)
+    when "2"
+      self.possibility =  self.user.suggest_random_possibility(30, self.limit_place)
+    when "3"
+      self.possibility = self.user.suggest_random_possibility(60, self.limit_place)
+    end
+>>>>>>> 4b4f906169c4a6535109baf3f1dbe05ce4057016
     puts ""
     puts ""
     puts Rainbow("#{self.possibility.name}: #{self.possibility.description}").bright.underline

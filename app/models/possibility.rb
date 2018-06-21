@@ -60,6 +60,9 @@ class Possibility < ActiveRecord::Base
       puts "You have accepted " + Rainbow("#{acceptance_percentage.to_i}%").bright + " of the possibilities we have suggested to you so far. You are killin' it!"
     end
 
+
+
+
   end
 
 end
