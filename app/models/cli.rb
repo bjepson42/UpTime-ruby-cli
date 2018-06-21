@@ -21,7 +21,7 @@ class Cli
     puts " 2. No"
     puts ""
     used_before = gets.strip
-    self.quit if used_before == "quit" 
+    self.quit if used_before == "quit"
     if used_before == "1"
       self.user_already_exists
     elsif used_before == "2"
@@ -151,7 +151,7 @@ class Cli
     self.quit if user_time == "quit"
     case user_time
       when "1"
-        limit_time = 60
+        limit_time = 15
       when "2"
         limit_time = 30
       when "3"
