@@ -1,4 +1,4 @@
-#Learn.co Educational Content License
+## License
 
 Copyright 2018 William Ley and Oren Magid
 

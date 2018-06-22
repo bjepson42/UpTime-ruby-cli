@@ -1,3 +1,4 @@
+require 'active_record'
 class Activity < ActiveRecord::Base
   belongs_to :user
   belongs_to :possibility
@@ -22,18 +23,21 @@ class Activity < ActiveRecord::Base
     exclude_poss_array = Activity.where(user_id: user_id, exclude: true)
 
     exclude_poss_ids = exclude_poss_array.map {|x| x.possibility_id}.uniq
-
+#---since we convert possibility.duration_in_minutes.to_i all nil values evaluate to 0 
     if limit_place == "work"
       location_time_exclude = Possibility.all.select do |possibility|
-        possibility.duration_in_minutes == time && ["work", nil].include?(possibility.necessary_location) || possibility.duration_in_minutes == nil && ["work", nil].include?(possibility.necessary_location)
+        possibility.duration_in_minutes.to_i <= time && ["work", nil].include?(possibility.necessary_location)
+        # || possibility.duration_in_minutes == nil && ["work", nil].include?(possibility.necessary_location)
       end
     elsif limit_place == "home"
       location_time_exclude = Possibility.all.select do |possibility|
-        possibility.duration_in_minutes == time && ["home", nil, "not work"].include?(possibility.necessary_location) || possibility.duration_in_minutes == nil && ["home", nil, "not work"].include?(possibility.necessary_location)
+        possibility.duration_in_minutes.to_i <= time && ["home", nil, "not work"].include?(possibility.necessary_location)
+        # || possibility.duration_in_minutes == nil && ["home", nil, "not work"].include?(possibility.necessary_location)
       end
     elsif limit_place == "not work or home"
       location_time_exclude = Possibility.all.select do |possibility|
-        possibility.duration_in_minutes == time && [nil, "not work"].include?(possibility.necessary_location) || possibility.duration_in_minutes == nil && [nil, "not work"].include?(possibility.necessary_location)
+        possibility.duration_in_minutes.to_i <= time && [nil, "not work"].include?(possibility.necessary_location)
+        # || possibility.duration_in_minutes == nil && [nil, "not work"].include?(possibility.necessary_location)
       end
     end
 
@@ -49,7 +53,6 @@ class Activity < ActiveRecord::Base
 
   def activity_stats
     average_rating = Activity.where(possibility_id: self.possibility_id, user_id: self.user_id).average("rating")
-
     if average_rating!= nil
       puts "Your average rating for this activity, on a scale of 1-5, is: " + Rainbow("#{average_rating.round(2)}").bright
     end

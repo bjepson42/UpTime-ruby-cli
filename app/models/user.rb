@@ -1,4 +1,5 @@
-class User < ActiveRecord::Base
+require 'active_record'
+class User< ActiveRecord::Base
   has_many :activities
   has_many :possibilities, through: :activities
 

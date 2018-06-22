@@ -1,5 +1,9 @@
-require_relative "../app/models/cli.rb"
+require_relative "../../app/models/cli.rb"
+require_relative "../../app/models/user.rb"
+require_relative "../../app/models/activity.rb"
+require_relative "../../config/environment.rb"
 require "spec_helper"
+
 
 describe "Cli" do
   let(:cli) { Cli.new } #<---this lets you use 'cli' as a universal new object
@@ -20,12 +24,7 @@ describe "Cli" do
 #     #expect { cli.where_are_you_at? }.to output(/Thank you for using UPTIME!/).to_stdout
 #   end
 
-it "returns the output of what was that?" do
-#   # cli.how_much_time?
-#   # allow(cli.how_much_time?).stub(gets: '1')
-  allow(cli).to receive(:gets).and_return("1")
-  expect(cli.where_are_you_at?).to output(/About how much time do you have?/).to_stdout
- end
+
 
 
  it "returns the output of what was that?" do
@@ -36,6 +35,9 @@ it "returns the output of what was that?" do
   end
 
 end
+
+
+
 
 
   # it "stuff the test is checking for" do
