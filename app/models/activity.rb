@@ -13,9 +13,9 @@ class Activity < ActiveRecord::Base
     self.save
   end
 
-#----get possiblity and check against exclude list
 
-#-----returns true if possiblity has been excluded by user ever
+
+#----compiles a non-excluded possiblity array and samples from that array for user
   def self.get_non_exclude_possiblity(user_id, time, limit_place)
 
 
@@ -51,16 +51,14 @@ class Activity < ActiveRecord::Base
     poss_array.sample
   end
 
+
+#---calculates and displays average rating of possiblity by user
   def activity_stats
     average_rating = Activity.where(possibility_id: self.possibility_id, user_id: self.user_id).average("rating")
     if average_rating!= nil
       puts "Your average rating for this activity, on a scale of 1-5, is: " + Rainbow("#{average_rating.round(2)}").bright
     end
-
   end
-
-
-
 
 
 end
