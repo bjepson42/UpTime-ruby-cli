@@ -23,7 +23,7 @@ class Activity < ActiveRecord::Base
     exclude_poss_array = Activity.where(user_id: user_id, exclude: true)
 
     exclude_poss_ids = exclude_poss_array.map {|x| x.possibility_id}.uniq
-#---since we convert possibility.duration_in_minutes.to_i all nil values evaluate to 0 
+#---since we convert possibility.duration_in_minutes.to_i all nil values evaluate to 0
     if limit_place == "work"
       location_time_exclude = Possibility.all.select do |possibility|
         possibility.duration_in_minutes.to_i <= time && ["work", nil].include?(possibility.necessary_location)
@@ -45,7 +45,7 @@ class Activity < ActiveRecord::Base
 
     if poss_array.length == 0
       puts ""
-      puts "You have deleted all possibilities associated with the time and location constraints you previously entered. If this was unintentional, you can always start fresh by reseeding the database. Exit UPTIME by typing "/quit/". Then type "rake db:migrate/" and press enter. Then type "/rake db:migrate/" and press enter. Finally, type "rake db:seed" and press enter. At this point, you should be ready to go! ."
+      puts "You have deleted all possibilities associated with the time and location constraints you previously entered. If this was unintentional, you can always start fresh by reseeding the database. Exit UPTIME by typing \"quit\". Then type \"rake db:migrate\" and press enter. Then type \"rake db:migrate\" and press enter. Finally, type \"rake db:seed\" and press enter. At this point, you should be ready to go!"
       exit
     end
     poss_array.sample
