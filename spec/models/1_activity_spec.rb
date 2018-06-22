@@ -21,8 +21,9 @@ describe Activity do
     activity.rate(-3)
     expect(activity.rating).to eq(1)
   end
-#-----Requires that test_possiblity be uncommented in seed data before seeding the database in order to pass. See line 30 in seeds.rb
-  xit "check 'test' activities average is 3" do
+
+  xit "check 'test' activities average is 3 'seed data restriction'" do
+    #-----Requires that test_possiblity be uncommented in seed data before seeding the database in order to pass. See line 30 in seeds.rb
     activity_test = Activity.find(1)
     expect { activity_test.activity_stats }.to output(/3/).to_stdout
   end
