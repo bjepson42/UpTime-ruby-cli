@@ -493,7 +493,7 @@ class Cli
 #-----quit text and exit function
   def quit
       puts ""
-      puts puts ""
+      puts ""
       puts Rainbow("*").blue * 70
       puts ""
       puts ""

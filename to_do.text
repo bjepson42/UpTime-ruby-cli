@@ -38,3 +38,38 @@ menu to show stats
 
 
 1: add a created_by_user_id to Possibilities DB and add created_by_user_id to new possibilities possibility
+
+
+INSTRUCTIONS
+
+read me
+
+
+
+
+*Build your application.
+
+*Most of your commits should have under 15 lines of code and a 2 line commit is perfectly acceptable.
+
+README.md with a short description, install instructions, a contributors guide and a link to the license for your code.
+-migrate
+-seeddata
+-ruby bin/run.rb
+
+filling out our rspec tests for five
+
+code of conduct
+
+
+Prepare a video demo (narration helps!) describing how a user would interact with your
+working project.
+The video should:
+Have an overview of your project.(2 minutes max)
+Prepare a presentation to follow your video.(3 minutes max)
+Your presentation should:
+
+Describe something you struggled to build, and show us how you ultimately implemented it in your code.
+Discuss 3 things you learned in the process of working on this project.
+Address, if anything, what you would change or add to what you have today?
+Present any code you would like to highlight.
+OPTIONAL, BUT RECOMMENDED: Write a blog post about the project and process.
