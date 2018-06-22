@@ -259,9 +259,9 @@ class Cli
         puts "About how long should it take to complete this possibility?"
         puts ""
         puts ""
-        puts " 1. 15 minutes"
-        puts " 2. 30 minutes"
-        puts " 3. 60 minutes"
+        puts " 1. Less than 15 minutes."
+        puts " 2. 15 minutes - 30 minutes."
+        puts " 3. More than 30 minutes."
         puts ""
         puts ""
         puts "Please enter a number."
@@ -328,7 +328,7 @@ class Cli
     elsif new_possibility_duration == "2"
       self.new_possibility.duration_in_minutes = 30
     elsif new_possibility_duration == "3"
-      self.new_possibility.duration_in_minutes = 30
+      self.new_possibility.duration_in_minutes = 60
     end
 
     if new_possibility_required_location == "1"
