@@ -40,7 +40,8 @@ class Activity < ActiveRecord::Base
     poss_array = location_time_exclude.map{|poss_object| poss_object if !exclude_poss_ids.include?(poss_object.id)}.compact
 
     if poss_array.length == 0
-      puts "We have no more possibilities for you."
+      puts ""
+      puts "You have deleted all possibilities associated with the time and location constraints you previously entered. If this was unintentional, you can always start fresh by reseeding the database. Exit UPTIME by typing "/quit/". Then type "rake db:migrate/" and press enter. Then type "/rake db:migrate/" and press enter. Finally, type "rake db:seed" and press enter. At this point, you should be ready to go! ."
       exit
     end
     poss_array.sample
