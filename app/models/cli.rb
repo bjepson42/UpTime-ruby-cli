@@ -17,7 +17,7 @@ class Cli
     puts ""
     puts Rainbow("Welcome to UPTIME!").bright.underline
     puts ""
-    puts "You may type 'quit' at any time to leave UPTIME."
+    puts "You may type \"quit\" at any time to leave UPTIME."
     puts ""
     puts "Have you used UPTIME on this computer before?"
     puts ""
@@ -64,6 +64,7 @@ class Cli
     puts "Tell us a little about yourself. It will only take a moment."
     puts ""
     puts "What is your name?"
+    puts ""
     new_user_full_name = gets.strip
     self.quit if new_user_full_name == "quit"
     puts ""
@@ -77,6 +78,7 @@ class Cli
     puts ""
     puts " 1. Yes"
     puts " 2. No"
+    puts ""
     nick_name = gets.strip
     self.quit if nick_name == "quit"
     if nick_name == "1"
@@ -88,11 +90,9 @@ class Cli
       puts ""
       puts ""
       puts "What would you like us to call you? (In other words, what is your nickname?)"
+      puts ""
       new_user_nickname = gets.chomp.split.map(&:capitalize).join(' ')
-      User.name_search_and_greeting_new(new_user_full_name, new_user_nick_name, self)
-      puts ""
-      puts ""
-      puts Rainbow("Well hello, #{new_user_nickname}! Let's get started!").underline.bright
+      User.name_search_and_greeting_new(new_user_full_name, new_user_nickname, self)
     elsif nick_name == "2"
       User.name_search_and_greeting_new(new_user_full_name, nil, self)
       user_name_array = new_user_full_name.split(" ")
@@ -483,7 +483,7 @@ class Cli
     puts ""
     user_response = gets.strip
     self.quit if user_response == "quit"
-    if ["1", "2", "3", "4", "5"].all? { |i| self.suggest_another != i}
+    if ["1", "2", "3", "4", "5"].all? { |i| user_response != i}
       self.what_was_that?
       self.get_rating
     end
@@ -515,7 +515,6 @@ class Cli
     puts "Would you please try a different answer?"
     puts "-" * 70
   end
-
 
 
 end

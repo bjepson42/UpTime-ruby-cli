@@ -23,6 +23,8 @@ class User < ActiveRecord::Base
 
   user_name_array = user_name_response.split(" ")
 
+
+
   cli_instance.user = User.where("LOWER(first_name) = ? AND LOWER(last_name) = ?", "#{user_name_array[0]}".downcase, "#{user_name_array[1]}".downcase).first
 
   if cli_instance.user == nil
@@ -70,20 +72,22 @@ class User < ActiveRecord::Base
     puts ""
     puts " 1. Yes. Perhaps I mispelled my name. I'll try again."
     puts " 2. No. I better tell you more about myself."
+    puts ""
     double_check_used_before = gets.strip
-    cli_instance.quit(double_check_used_before)
+    cli_instance.quit if double_check_used_before == "quit"
     if double_check_used_before == "1"
       cli_instance.user_already_exists
     elsif double_check_used_before == "2"
       cli_instance.create_new_user
     else
       cli_instance.what_was_that?
-      cli_instance.user_already_exists
+      User.name_search_and_greeting(user_name_response, cli_instanc)
     end
   end
 end
 
 def self.name_search_and_greeting_new(user_name_response, nick_name, cli_instance)
+
 
 user_name_array = user_name_response.split(" ")
 
@@ -123,14 +127,33 @@ if cli_instance.user
   puts ""
   puts ""
 else
-  puts ""
-  puts Rainbow("*").blue * 70
-  puts ""
-  puts ""
-  puts ""
-  puts ""
-  puts ""
-  puts Rainbow("Okay, great! We'll just call you #{new_user_full_name.split(" ")[0]}. Let's get started!").underline.bright
+  if nick_name == nil
+    puts ""
+    puts Rainbow("*").blue * 70
+    puts ""
+    puts ""
+    puts ""
+    puts ""
+    puts ""
+    puts Rainbow("Hi, #{user_name_response.split(" ")[0]}! Welcome to UPTIME!").underline.bright
+    puts ""
+    puts ""
+    puts "You're here, because you have a bit of downtime, and you want to turn it into UPTIME!"
+    puts ""
+    puts ""
+  else
+    puts ""
+    puts Rainbow("*").blue * 70
+    puts ""
+    puts ""
+    puts ""
+    puts ""
+    puts ""
+    puts Rainbow("Hi, #{nick_name}! Welcome to UPTIME!").underline.bright
+    puts ""
+    puts ""
+  end
+  cli_instance.user = User.create(first_name: "#{user_name_response.split(" ")[0]}", nick_name: "#{nick_name}", last_name: "#{user_name_response.split(" ")[1]}")
 end
 
 end
