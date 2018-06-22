@@ -5,57 +5,6 @@ require_relative "../../config/environment.rb"
 require "spec_helper"
 
 
-
-describe User do
-  let(:user) { User.new }
-
-
-  it "Test Me returns the user.first_name Testing" do
-    cli_instance = Cli.new
-  #   # allow(cli.how_much_time?).stub(gets: '1')
-    User.name_search_and_greeting("Testing Me", cli_instance)
-    expect(cli_instance.user.first_name).to eq("Testing")
-   end
-
-   it "finds an exisiting user in db if existing user tries to create new user" do
-     cli_instance = Cli.new
-   #   # allow(cli.how_much_time?).stub(gets: '1')
-     User.name_search_and_greeting_new("Test Me", "Test", cli_instance)
-     expect(cli_instance.user.first_name).to eq("Testing")
-    end
-
-end
-
-describe Activity do
-  let(:activity) { Activity.new }
-
-  it "sets activity rating to be 3" do
-    activity.rate(3)
-    expect(activity.rating).to eq(3)
-  end
-
-  it "sets activity rating to 5 if user input is over 5" do
-    activity.rate(10)
-    expect(activity.rating).to eq(5)
-  end
-
-  it "sets activity rating to 1 if user input is under 1" do
-    activity.rate(-3)
-    expect(activity.rating).to eq(1)
-  end
-
-  it "check 'test' activities average is 3" do
-    activity_test = Activity.find(1)
-    expect { activity_test.activity_stats }.to output(/3/).to_stdout
-  end
-
-
-end
-
-
-
-
-
 describe "Cli" do
   let(:cli) { Cli.new } #<---this lets you use 'cli' as a universal new object
 
