@@ -483,7 +483,7 @@ class Cli
     puts ""
     user_response = gets.strip
     self.quit if user_response == "quit"
-    if ["1", "2", "3", "4", "5"].all? { |i| self.suggest_another != i}
+    if ["1", "2", "3", "4", "5"].all? { |i| user_response != i}
       self.what_was_that?
       self.get_rating
     end
