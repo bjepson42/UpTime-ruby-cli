@@ -3,3 +3,4 @@
  * menu to show stats and perhaps other options, like deleting user
  * ?password?
  * option to change time and location constraints
+ * display non-user-specific average rating?
