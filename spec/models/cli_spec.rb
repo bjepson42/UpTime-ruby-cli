@@ -1,5 +1,50 @@
-require_relative "../app/models/cli.rb"
+require_relative "../../app/models/cli.rb"
+require_relative "../../app/models/user.rb"
+require_relative "../../app/models/activity.rb"
+require_relative "../../config/environment.rb"
 require "spec_helper"
+
+
+
+describe User do
+  let(:user) { User.new }
+
+
+  it "Test Me returns the user.first_name Testing" do
+    cli_instance = Cli.new
+  #   # allow(cli.how_much_time?).stub(gets: '1')
+    User.name_search_and_greeting("Testing Me", cli_instance)
+    expect(cli_instance.user.first_name).to eq("Testing")
+   end
+
+end
+
+describe Activity do
+  let(:activity) { Activity.new }
+
+  it "sets activity rating to be 3" do
+    activity.rate(3)
+    expect(activity.rating).to eq(3)
+  end
+
+  it "sets activity rating to 5 if user input is over 5" do
+
+    activity.rate(10)
+    expect(activity.rating).to eq(5)
+  end
+
+#---getting nil...
+  it "check 'test' activities average is 3" do
+    activity_test = Activity.find(1)
+    expect(activity_test.activity_stats).to eq(/3/)
+  end
+
+
+end
+
+
+
+
 
 describe "Cli" do
   let(:cli) { Cli.new } #<---this lets you use 'cli' as a universal new object
@@ -20,12 +65,7 @@ describe "Cli" do
 #     #expect { cli.where_are_you_at? }.to output(/Thank you for using UPTIME!/).to_stdout
 #   end
 
-it "returns the output of what was that?" do
-#   # cli.how_much_time?
-#   # allow(cli.how_much_time?).stub(gets: '1')
-  allow(cli).to receive(:gets).and_return("1")
-  expect(cli.where_are_you_at?).to output(/About how much time do you have?/).to_stdout
- end
+
 
 
  it "returns the output of what was that?" do
@@ -36,6 +76,9 @@ it "returns the output of what was that?" do
   end
 
 end
+
+
+
 
 
   # it "stuff the test is checking for" do

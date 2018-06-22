@@ -1,6 +1,12 @@
 require 'require_all'
 require_all 'app'
 require_relative "../config/environment.rb"
+
+#-----Test user please do not move
+test_user = User.create(first_name: "Testing", last_name: "Me", nick_name: "Test")
+#-------------------------------------------------------------------
+
+
 #----User Seeds
 
 will = User.create(first_name: "William", last_name: "Ley", nick_name: "Will")
@@ -18,6 +24,17 @@ oren = User.create(first_name: "Oren", last_name: "Magid")
 # t.boolean  "others_required"
 # t.datetime "created_at" <---auto generated
 # t.datetime "updated_at" <---auto generated
+
+
+
+#--------Test Possibility please do not move
+test_possiblity = Possibility.create(name: "Test", description: "Test this", past_tense: "tested this", physical_intensity: 1, mental_intensity: 5, fun_index: 3)
+#------------------------------------------------------------------------------
+
+
+
+
+
 
 read = Possibility.create(name: "Read", description: "Grab a nearby book, or open up your Kindle, and enjoy a little reading.", past_tense: "read", physical_intensity: 1, mental_intensity: 3, fun_index: 3)
 
@@ -58,3 +75,16 @@ write = Possibility.create(name: "Do Some Writing", description: "Grab a pencil 
 new_possibility = Possibility.create(name: "Create a New Possibility for the Future", description: "Take a few minutes to create a new possibility from scratch.", past_tense: "created a new possibility", physical_intensity: 1, mental_intensity: 4, fun_index: 3, duration_in_minutes: 15, necessary_location: nil, others_required: nil)
 
 walk_around_office = Possibility.create(name: "Walk Around The Office", description: "Get up, stretch your legs, and get some coffee or just get away from the screen for a while", past_tense: "took a walk around the office", physical_intensity: 3, mental_intensity: 1, fun_index: 3, necessary_location: "work")
+
+
+
+
+
+#----------- Testing seed data do not remove
+activity_test_5 = Activity.create(status: "accepted", user_id: 1, possibility_id: 1, rating: 5)
+
+activity_test_2 = Activity.create(status: "accepted", user_id: 1, possibility_id: 1, rating: 3)
+
+activity_test_1 = Activity.create(status: "accepted", user_id: 1, possibility_id: 1, rating: 5)
+activity_test_4 = Activity.create(status: "accepted", user_id: 1, possibility_id: 1, rating: 2)
+activity_test_3 = Activity.create(status: "accepted", user_id: 1, possibility_id: 1, rating: 1)
