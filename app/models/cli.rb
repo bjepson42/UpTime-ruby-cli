@@ -7,7 +7,7 @@ class Cli
   def call
      self.start
   end
-#---welcome and have you used on comp. before
+#---welcome user and gets input about previous use
   def start
     puts ""
     puts Rainbow("*").blue * 70
@@ -36,7 +36,7 @@ class Cli
     end
   end
 
-
+#--If user indicates they have used the program calls user helper method which searches for and greats users if found
   def user_already_exists
     puts ""
     puts Rainbow("*").blue * 70
@@ -52,7 +52,7 @@ class Cli
     User.name_search_and_greeting(user_name_response, self)
     self.where_are_you_at?
   end
-#----------------should all be in user below
+#----------------should all be in user below?
   def create_new_user
     puts ""
     puts Rainbow("*").blue * 70
@@ -143,7 +143,6 @@ class Cli
 
 
 #---user sets time constraint ->moves to gen. possibilities
-  #how much time do you have 1. 15min, 2. 30 min, 3. 60 minutes
   def how_much_time?
     puts ""
     puts Rainbow("*").blue * 70
@@ -177,7 +176,7 @@ class Cli
     self.suggest_possibility
   end
 
-#----generates possibilities and accept/reject from user
+#----generates possibilities, displays user status by calling on User helper
   def suggest_possibility
     puts ""
     puts Rainbow("*").blue * 70
@@ -197,7 +196,7 @@ class Cli
   end
 
 
-#------Accept or reject, save as Activity regardless
+#------Accept or reject
 
   def accept_or_reject
     puts "Would you like to accept or reject this possibility?" + Rainbow(" (#{self.possibility.name})").bright
@@ -218,12 +217,9 @@ class Cli
     self.create_activity
   end
 
-#------after accept don't autoquit ask if they want another activity or to quit
-
+#-----creates a new activity entry from the suggested possiblity if rejected or accepted with special case of Create New Possiblity
   def create_activity
-    #------accepts activity
     if self.accepted_or_rejected == "1"
-
 #-----------move this section to possiblity creation method under possiblity see note: 1 in todo
       if self.possibility.name == "Create a New Possibility for the Future"
         puts ""
@@ -320,8 +316,8 @@ class Cli
 
   end
 
+#---------creates new possibility
   def create_new_possibility
-#---------code between creates new possibility
     self.new_possibility = Possibility.create(name: self.new_possibility_name, description: self.new_possibility_description)
 
     if new_possibility_duration == "1"
@@ -342,7 +338,7 @@ class Cli
       self.new_possibility.necessary_location = nil
     end
     self.new_possibility.save
-#-----------------------------------------------------
+
 
     self.activity = Activity.create(status: "accepted and completed", user_id: self.user.id,
       possibility_id: self.possibility.id)
@@ -360,21 +356,9 @@ class Cli
     puts ""
     puts "Thanks for your rating!"
     puts ""
-    puts "Would you like us to suggest a new possibility?"
-    puts ""
-    puts "1. Yes, give me more."
-    puts "2. No, I've had enough."
-    puts ""
-    puts ""
-    self.suggest_another = gets.strip
-    self.quit if self.suggest_another == "quit"
-    if ["1", "2"].all? { |i| self.suggest_another != i}
-      self.what_was_that?
-      self.create_new_possibility
-    end
-    self.continue?
   end
-#---------Get rating method should be pulled out from above and below methods and a helper method created for it
+
+#------Asks user about completion of possiblity and saves status of activity
   def complete_activity
     if self.activity.status != "accepted and completed"
       puts ""
@@ -402,7 +386,6 @@ class Cli
       if self.completed_activity == "1"
         self.activity.status = "accepted and completed"
         self.activity.save
-        #we need to add functionality to ask them to rate the activity
         puts ""
         self.get_rating
         puts ""
@@ -417,17 +400,7 @@ class Cli
         puts ""
         self.activity.activity_stats
         puts ""
-        puts ""
-        puts "Would you like us to suggest a new possibility?"
-        puts ""
-        puts ""
-        puts "1. Yes, give me more."
-        puts "2. No, I've had enough."
-        puts ""
-        puts ""
-        self.suggest_another = gets.strip
-        self.quit if self.suggest_another == "quit"
-        self.continue?
+        self.suggest_new_possibility?
       elsif self.completed_activity == "2"
         self.activity.status = "accepted but not completed"
         self.activity.save
@@ -437,27 +410,41 @@ class Cli
         puts ""
         puts ""
         puts ""
-        puts ""
-        puts "Would you like us to suggest a new possibility?"
-        puts ""
-        puts "1. Yes, give me more."
-        puts "2. No, I've had enough. Let's quit the program."
-        puts ""
-        puts ""
-        self.suggest_another = gets.strip
-        self.quit if self.suggest_another == "quit"
-        self.continue?
+        self.suggest_new_possibility?
       end
     end
   end
 
+
+
+
 #------helper methods for CLI ------------------------------------------------
 
 
+#----asks user if they want to continue, alter the perameters, or stop
+  def suggest_new_possibility?
+      puts ""
+      puts "Would you like us to suggest a new possibility?"
+      puts ""
+      puts "1. Yes, give me more."
+      puts "2. Yes and I'd like to change my time and location first."
+      puts "3. No, I've had enough."
+      puts ""
+      self.suggest_another = gets.strip
+      self.quit if self.suggest_another == "quit"
+      if ["1", "2", "3"].all? { |i| self.suggest_another != i}
+        self.what_was_that?
+        self.suggest_new_possibility?
+      end
+      self.continue?
+    end
+#-----paths the user based on responses from the continue prompt in suggest_new_possibility?
   def continue?
     if self.suggest_another == "1"
       self.suggest_possibility
     elsif self.suggest_another == "2"
+      self.where_are_you_at?
+    elsif self.suggest_another == "3"
       exit
     end
   end
@@ -504,10 +491,10 @@ class Cli
       puts "Have a fantastic day!"
       puts ""
       puts ""
-      exit
+    exit
   end
 
-#-----what was that text
+#-----what was that text for blank or unexpected input
 
   def what_was_that?
     puts "-" * 70
