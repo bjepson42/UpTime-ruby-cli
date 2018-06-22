@@ -49,7 +49,6 @@ class Activity < ActiveRecord::Base
 
   def activity_stats
     average_rating = Activity.where(possibility_id: self.possibility_id, user_id: self.user_id).average("rating")
-
     if average_rating!= nil
       puts "Your average rating for this activity, on a scale of 1-5, is: " + Rainbow("#{average_rating.round(2)}").bright
     end

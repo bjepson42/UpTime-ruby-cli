@@ -38,18 +38,16 @@ describe Activity do
     activity.rate(10)
     expect(activity.rating).to eq(5)
   end
-  
+
   it "sets activity rating to 1 if user input is under 1" do
     activity.rate(-3)
     expect(activity.rating).to eq(1)
   end
 
-#---getting nil...
-  # it "check 'test' activities average is 3" do
-  #   activity_test = double
-  #   activity_test = Activity.create(possibility_id: 1, user_id: 1)
-  #   expect(activity_test.activity_stats).to output(/Your average rating for this activity, on a scale of 1-5/).to_stdout
-  # end
+  it "check 'test' activities average is 3" do
+    activity_test = Activity.find(1)
+    expect { activity_test.activity_stats }.to output(/3/).to_stdout
+  end
 
 
 end
