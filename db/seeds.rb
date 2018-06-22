@@ -27,8 +27,8 @@ oren = User.create(first_name: "Oren", last_name: "Magid")
 
 
 
-#--------Test Possibility please do not move
-test_possiblity = Possibility.create(name: "Test", description: "Test this", past_tense: "tested this", physical_intensity: 1, mental_intensity: 5, fun_index: 3)
+#--------Test Possibility please do not move and uncomment to run rspec
+#test_possiblity = Possibility.create(name: "Test", description: "Test this", past_tense: "tested this", physical_intensity: 1, mental_intensity: 5, fun_index: 3)
 #------------------------------------------------------------------------------
 
 
