@@ -76,6 +76,8 @@ new_possibility = Possibility.create(name: "Create a New Possibility for the Fut
 
 walk_around_office = Possibility.create(name: "Walk Around The Office", description: "Get up, stretch your legs, and get some coffee or just get away from the screen for a while", past_tense: "took a walk around the office", physical_intensity: 3, mental_intensity: 1, fun_index: 3, necessary_location: "work")
 
+stretch = Possibility.create(name: "Stretch", description: "Get up and do some stretching!", past_tense: "took a walk", physical_intensity: 3, mental_intensity: 1, fun_index: 3)
+
 
 
 
