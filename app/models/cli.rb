@@ -80,7 +80,6 @@ class Cli
     puts " 2. No"
     puts ""
     nick_name = gets.strip
-    self.quit if nick_name == "quit"
     if nick_name == "1"
       puts ""
       puts Rainbow("*").blue * 70
@@ -96,6 +95,8 @@ class Cli
     elsif nick_name == "2"
       User.name_search_and_greeting_new(new_user_full_name, nil, self)
       user_name_array = new_user_full_name.split(" ")
+    elsif nick_name == "quit"
+      self.quit
     end
     self.where_are_you_at?
   end
