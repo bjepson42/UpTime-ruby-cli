@@ -46,7 +46,7 @@ class User< ActiveRecord::Base
       puts ""
       puts ""
     end
-    puts "You're here, because you have a bit of downtime, and you want to turn it into UPTIME!"
+    puts "You're here because you have a bit of downtime, and you want to turn it into UPTIME!"
     puts ""
     puts ""
     Possibility.user_possibility_stats(cli_instance.user.id)
@@ -112,7 +112,7 @@ end
         puts ""
         puts ""
       end
-      puts "You're here, because you have a bit of downtime, and you want to turn it into UPTIME!"
+      puts "You're here because you have a bit of downtime, and you want to turn it into UPTIME!"
       puts ""
       puts ""
       Possibility.user_possibility_stats(cli_instance.user.id)
@@ -130,7 +130,7 @@ end
         puts Rainbow("Hi, #{user_name_response.split(" ")[0]}! Welcome to UPTIME!").underline.bright
         puts ""
         puts ""
-        puts "You're here, because you have a bit of downtime, and you want to turn it into UPTIME!"
+        puts "You're here because you have a bit of downtime, and you want to turn it into UPTIME!"
         puts ""
         puts ""
       else
@@ -148,5 +148,5 @@ end
       cli_instance.user = User.create(first_name: "#{user_name_response.split(" ")[0]}", nick_name: "#{nick_name}", last_name: "#{user_name_response.split(" ")[1]}")
     end
   end
-  
+
 end
