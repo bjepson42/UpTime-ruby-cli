@@ -1,5 +1,7 @@
 # UPTIME
 
+Joint project with <a href="https://github.com/orenmagid">Oren Magid</a>
+
 Uptime is a fun little command line application you can use when you have some downtime. After you log in, you'll answer a few simple questions about where you are, and how much downtime you have. Uptime will then randomly suggest an activity from it's pool of activities that match that criteria. Some of the suggested activities are fun, or even a little silly. Some are closer to chores or other activities you probably should do, but might not otherwise be motivated to follow through with. Uptime may suggest that you clean your bathroom, or it may give you license to just chill and stream a movie on Netflix.
 
 No matter what Uptime suggests, you can either accept or reject that suggested activity. Either way, Uptime will take notice and keep track of your overall acceptance rate, in addition to your acceptance rate for each suggestion. Uptime will sometimes suggest that you create a new suggestion to add to the pool, and then walk you through that process. You can also tell Uptime to no longer suggest any particular possibility. Thus, the more you use Uptime, the more you'll make it your own.
